@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="h5 mb-3">Search Cards to Add to Watchlist</h1>
+
+<form method="post" class="row g-3 mb-4">
+  <div class="col-md-6">
+    <label for="name" class="form-label">Card name (or partial)</label>
+    <input
+      type="text"
+      class="form-control"
+      id="name"
+      name="name"
+      value="{{ query_name }}"
+      placeholder="Ragavan, Nimble Pilferer"
+      required
+    >
+  </div>
+  <div class="col-md-3">
+    <label for="set_code" class="form-label">Set code (optional)</label>
+    <input
+      type="text"
+      class="form-control"
+      id="set_code"
+      name="set_code"
+      value="{{ query_set }}"
+      placeholder="MH2"
+    >
+  </div>
+  <div class="col-md-3 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+</form>
+
+{% if results %}
+  <p class="text-muted mb-2">Showing up to {{ results|length }} results.</p>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Card</th>
+          <th>Set</th>
+          <th>Collector #</th>
+          <th>TCGplayer ID</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in results %}
+        <tr>
+          <td>{{ r.name }}</td>
+          <td>{{ r.set_code }}</td>
+          <td>{{ r.collector_number }}</td>
+          <td>{{ r.tcgplayer_product_id or "-" }}</td>
+          <td class="text-end">
+            <a
+              href="{{ url_for('watchlist_add', uuid_str=r.uuid) }}"
+              class="btn btn-outline-primary btn-sm"
+            >
+              Add / Edit Watch
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% elif query_name %}
+  <p class="text-muted">No results found for that search.</p>
+{% endif %}
+{% endblock %}
