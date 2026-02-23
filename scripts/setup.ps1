@@ -1,7 +1,7 @@
 param(
   [string]$DbUser = "mtg_user",
   [string]$DbName = "mtg_price_alert",
-  [string]$PgBin  = ""
+  [string]$PgBin = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -32,12 +32,13 @@ py -m pip install flask | Out-Null
 # 5) Auto-detect PostgreSQL bin directory if not provided
 if ($PgBin -eq "") {
   $pgVersions = Get-ChildItem "C:\Program Files\PostgreSQL" -ErrorAction SilentlyContinue |
-    Where-Object { $_.PSIsContainer } |
-    Sort-Object { [int]$_.Name } -Descending
+  Where-Object { $_.PSIsContainer } |
+  Sort-Object { [int]$_.Name } -Descending
   if ($pgVersions) {
     $PgBin = Join-Path $pgVersions[0].FullName "bin"
     Write-Host "Auto-detected PostgreSQL at: $PgBin" -ForegroundColor DarkGray
-  } else {
+  }
+  else {
     throw "No PostgreSQL installation found under 'C:\Program Files\PostgreSQL'. Install PostgreSQL or pass -PgBin manually."
   }
 }
@@ -60,6 +61,8 @@ psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "DO \$\$
 BEGIN
   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$DbUser') THEN
     CREATE ROLE $DbUser LOGIN PASSWORD '$pgPassPlain';
+  ELSE
+    ALTER ROLE $DbUser LOGIN PASSWORD '$pgPassPlain';
   END IF;
 END
 \$\$;"

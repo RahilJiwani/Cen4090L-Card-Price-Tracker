@@ -66,12 +66,12 @@ $env:PATH += ";$PgBin"
 # 6) Create DB + user + load schema
 Write-Host "Creating Postgres user/database and loading schema..." -ForegroundColor Yellow
 
-# Create user (ignore if exists)
+# Create or Update user
 try {
-  psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "CREATE USER $DbUser WITH PASSWORD '$DbPassword';"
+  psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$DbUser') THEN CREATE USER $DbUser WITH PASSWORD '$DbPassword'; ELSE ALTER USER $DbUser WITH PASSWORD '$DbPassword'; END IF; END \$\$;"
 }
 catch {
-  Write-Host "User may already exist. Continuing..." -ForegroundColor DarkYellow
+  Write-Host "User creation or update may have failed. Continuing..." -ForegroundColor DarkYellow
 }
 
 # Create DB (ignore if exists)
