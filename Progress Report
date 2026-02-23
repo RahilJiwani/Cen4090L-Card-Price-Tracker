@@ -1,13 +1,12 @@
 - Increment 1 -
 Group #17
 1) Team Members
-Rachel Armstrong (rma23f) 
-Rahil Jiwani (rsj22a)
- Tyler Keller (tjk24c)
-Angus Liu (AL21bk)
-Cassadi Quinones (cxq22)
-2) Project Title and Description
-Card-Price-Tracker
+Rachel Armstrong (rma23f) Race11e
+Rahil Jiwani (rsj22a) RahilJiwani 
+Tyler Keller (tjk24c) Hobbs04067
+Angus Liu (AL21bk) K1nightmar3
+Cassadi Quinones (cxq22) cassadiq
+2) Card-Price-Tracker
 a python program and website that aims to notify users when the price of a Magic the Gathering card falls below a certain amount.
 3)During this increment we decided on deploying an existing project. Our team decided that to do so we needed to apply a different architectural framework. The design plans became a 3-layer system:
 •	A React frontend handling all UI and user interaction
