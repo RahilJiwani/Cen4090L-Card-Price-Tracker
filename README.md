@@ -8,6 +8,7 @@ If you are a team member cloning this repo for the first time, follow these step
 ### Prerequisites
 - Python 3.9+ installed
 - PostgreSQL installed locally
+- NodeJS and npm
 
 ### Step 1: Bootstrap the Environment
 We have a fully automated bootstrap script that sets up your Python virtual environment, installs all dependencies, creates the database, and loads the schema.
@@ -27,7 +28,7 @@ Once bootstrap completes successfully, you can start the Flask development serve
 .\scripts\run.ps1
 ```
 
-The app will now be running at `http://127.0.0.1:8000/`.
+The app will now be running at `http://127.0.0.1:5174/`.
 
 ---
 *Note: You only need to run `bootstrap.ps1` once. After that, just use `run.ps1` to start the app for development.*

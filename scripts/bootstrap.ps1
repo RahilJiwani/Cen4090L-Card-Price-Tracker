@@ -22,6 +22,15 @@ if (!(Test-Path "$ProjectRoot\requirements.txt") -or !(Test-Path "$ProjectRoot\a
   throw "Not in project root. cd into the folder that contains requirements.txt, app/, and sql/schema.sql then re-run."
 }
 
+# 0.5) Ensure Node.js is available for the client
+try {
+  node -v | Out-Null
+  npm -v | Out-Null
+}
+catch {
+  throw "Node.js (or npm) not found. Install Node.js before running bootstrap."
+}
+
 # 1) Ensure python launcher works
 py -V | Out-Null
 
