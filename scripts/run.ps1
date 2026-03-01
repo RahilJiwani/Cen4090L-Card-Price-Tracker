@@ -20,6 +20,6 @@ Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", "py -m
 
 Start-Sleep -Seconds 2
 
-$clientPath = Join-Path $PWD "client"
-$clientCommand = "Set-Location `"$clientPath`"; if (!(Test-Path node_modules)) { npm install }; npm run dev"
-Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", $clientCommand
+$clientPath = (Resolve-Path ".\client").Path
+$clientCommand = "if (!(Test-Path node_modules)) { npm install }; npm run dev"
+Start-Process -FilePath "powershell" -WorkingDirectory $clientPath -ArgumentList "-NoExit", "-Command", $clientCommand
