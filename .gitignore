@@ -1,6 +1,7 @@
 # Python/Flask
 *pyc
 .env
+.env.example
 .venv/
 
 # Node/React
