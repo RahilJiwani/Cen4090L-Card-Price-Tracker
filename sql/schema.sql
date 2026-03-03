@@ -90,3 +90,6 @@ CREATE TABLE IF NOT EXISTS alerts (
 
 CREATE INDEX IF NOT EXISTS idx_alerts_user_created
     ON alerts (user_id, created_at DESC);
+-- Grant full access to the application user on all tables
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users, cards, daily_prices, watchlist, alerts TO mtg_user;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO mtg_user;

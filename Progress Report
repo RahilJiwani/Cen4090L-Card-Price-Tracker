@@ -1,0 +1,35 @@
+- Increment 1 -
+Group #17
+1) Team Members
+Rachel Armstrong (rma23f) Race11e
+Rahil Jiwani (rsj22a) RahilJiwani 
+Tyler Keller (tjk24c) Hobbs04067
+Angus Liu (AL21bk) K1nightmar3
+Cassadi Quinones (cxq22) cassadiq
+2) Card-Price-Tracker
+a python program and website that aims to notify users when the price of a Magic the Gathering card falls below a certain amount.
+3)During this increment we decided on deploying an existing project. Our team decided that to do so we needed to apply a different architectural framework. The design plans became a 3-layer system:
+•	A React frontend handling all UI and user interaction
+•	A Flask API handling data requests and business logic
+•	A Neon cloud-hosted PostgreSQL database accessible to the whole team
+The main accomplishment during this increment was documenting and understanding the architecture we had in mind, so we could prevent integration issues later on. The team identified that converting Flask into an API required defining an API contract a shared agreement on how the frontend and backend communicate before any code is written. The team also created a list of tasks and issues that need to be completed going into the next increment.
+4) An issue was knowledge gap of the inherited code base and the decision to use React as that is what our frontend developer decided on using. This caused us to redesign our code to be focused on that decision which had effects like flask API. The idea of deploying this project also created an issue with the PostgreSQL so we decided to use neon for our cloud DB.
+5) 
+a) Angus Liu worked on the Progress report from creating the video to finding the issues and documenting our progress.
+b) Tyler Keller worked on the requirement and design document
+c) Rachel Armstrong worked on the implementation and testing document 
+d) Rahil Jiwani created the make file and the initial main branch. The actual code has been untouched
+e) Rahil Jiwani worked on the video.
+6) The teams plan for the next increment is to create the systems like the flask API. Remaking the entire html into a React system and the new Neon PostgreSQL. This will take a lot of code rewriting and many changes to the current codebase.
+7) 
+Dear [shareholders],
+This is the development team, we are writing to provide an update on the development of your MTG card price tracking platform
+The previous version of the tool worked but wasn't built to be deployed to real users. We caught this early. 
+We're rebuilding the foundation properly so this doesn't become a bigger problem later. This is a short-term delay for a much more reliable product. The goal will be to update everything with future proofing and scalability in mind. This way it will be cheaper for future development and faster development cycles.
+We expect to have an updated version ready for review by next development update.
+Best regards,
+MTG development team
+
+8) Link to video
+Paste here the link to your video.
+https://drive.google.com/file/d/1I2uZJLjznutO-OF7q19EQ51wi8oI8N3B/view?usp=sharing

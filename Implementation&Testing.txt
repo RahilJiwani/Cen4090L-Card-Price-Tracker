@@ -1,0 +1,43 @@
+Software Implementation and Testing Document  
+ 
+
+For Group <17> 
+
+Version 1.0 
+
+Authors:  
+
+Tyler K. 
+
+Angus L. 
+
+Cassadi Q. 
+
+Rachel A. 
+
+Rahil J.  
+
+
+Programming Languages (5 points) 
+
+  JavaScript – JavaScript has a library called React which allows us to create front-end components that look smooth extremely efficiently. 
+
+  Python – Python has a library called Flask which is used to create the backend of the web application. The implementation removes a large part of the struggle with sockets and web directories. This was also the language used for the original version of the application making it trivial to switch from the legacy build. SQLAlchemy will be used with flask for interacting with the database.  
+
+
+Platforms, APIs, Databases, and other technologies used (5 points)  
+
+  PostgresSQL will be used for databasing, along with Neon (uses AWS) as the database host.  
+
+  MTGJson and Scryfall API will be used for card information, card images, and price history.  
+
+ 
+
+Execution-based Functional Testing (10 points) 
+
+  Some functional testing was performed by running the website on local machine, however the frontend and some of the backend of this is going to be reworked. Most of what is on the Github repository right now is an old project by Rahil Jiwani, and is implemented with html and python.  
+
+ 
+  A Neon database has been set-up, with the URL being a Github Secret variable. Connectivity to database was tested on local machine.  
+
+ 
