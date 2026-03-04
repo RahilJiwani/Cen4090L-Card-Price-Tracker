@@ -5,6 +5,7 @@
 import requests
 from app import app, db, Card
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import or_
 
 def fetch_scryfall_data():
     print("Fetching scryfall data...")
@@ -29,7 +30,15 @@ def update_cards(json_data):
 
     update_stmt = stmt.on_conflict_do_update(
         index_elements=['scryfall_id'],
-        set_=update_dict
+        set_=update_dict,
+        # where clause added to prevent unnecessary updates/inserts
+        where=or_(
+            Card.card_name != stmt.excluded.card_name,
+            Card.rarity != stmt.excluded.rarity,
+            Card.set_code != stmt.excluded.set_code,
+            Card.collector_num != stmt.excluded.collector_num,
+            Card.image_url.is_distinct_from(stmt.excluded.image_url)
+        )
     )
 
     db.session.execute(update_stmt)
