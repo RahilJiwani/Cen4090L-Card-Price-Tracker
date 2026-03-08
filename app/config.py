@@ -29,7 +29,7 @@ class Settings:
     db_port: int = int(os.getenv("DB_PORT", "5432"))
     db_name: str = os.getenv("DB_NAME", "mtg_price_alert")
     db_user: str = os.getenv("DB_USER", "mtg_user")
-    db_password: str = os.getenv("DB_PASSWORD", "")
+    db_password: str = os.getenv("DB_PASSWORD", "supersecret")
 
     # --- Database settings (UPPERCASE aliases) ---
     DB_HOST: str = os.getenv("DB_HOST", "localhost")

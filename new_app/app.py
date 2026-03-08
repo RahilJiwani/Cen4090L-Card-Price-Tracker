@@ -1,63 +1,40 @@
-import os
-import datetime
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, redirect
+from flask_restx import Api, Resource
+from .config import Config
+from .exts import db
 
-# NOTE: Have .env file in same directory, should look like
+# NOTE: .env must be in the new_app directory unlike the old one. The current bootstrap is outdated and generates on in the root.
 # DATABASE_URL="database@link.com"
+# this URL can be obtained on the Neon dashboard: "Connect" -> "Connection string"
 # do not upload database url to github, it is a secret (see settings)
-load_dotenv()
-conn_str = os.getenv('DATABASE_URL')
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-if not conn_str:
-    raise ValueError("No DATABASE_URL found in environment variables. Check your .env file!")
+    db.init_app(app)
 
+    api = Api(
+        app,
+        doc="/swagger",
+        prefix="/api",
+    )
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = conn_str
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    from .resources.test import api as test_namespace
+    api.add_namespace(test_namespace)
 
-db = SQLAlchemy(app)
+    @api.route("/test")
+    class TestResource(Resource):
+        def get(self):
+            return {"message": "simple test api"}, 200
 
-class Card(db.Model):
-    __tablename__ = 'cards'
-    card_id = db.Column(db.Integer, primary_key=True)
-    scryfall_id = db.Column(db.String(50), unique=True, nullable=False)
-    card_name = db.Column(db.String(255), nullable=False)
-    rarity = db.Column(db.String(50), nullable=False)
-    set_code = db.Column(db.String(20), nullable=False)
-    collector_num = db.Column(db.String(50), nullable=False)
-    image_url = db.Column(db.Text, nullable=True)
+    # temporarily reroutes to swagger view for dev help
+    @app.route("/")
+    def home():
+        return redirect("/swagger")
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.today())
+    return app
 
-    # Many-to-many relationship
-    watchlist = db.relationship('Card', secondary='watchlists', backref='watched_by')
+app = create_app()
 
-    # Helper funcs==============================================================================
-
-    # Use to hash password
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    # Use to authenticate password
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-class Watchlist(db.Model):
-    __tablename__ = 'watchlists'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.card_id'), primary_key=True)
-
-
-# Need PriceHistory (will be added)
-
-
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=8080)

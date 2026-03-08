@@ -4,8 +4,8 @@
 
 import requests
 from app import app, db, Card
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import or_
+from flask_sqlalchemy.dialects.postgresql import insert
+from flask_sqlalchemy import or_
 
 def fetch_scryfall_data():
     print("Fetching scryfall data...")
