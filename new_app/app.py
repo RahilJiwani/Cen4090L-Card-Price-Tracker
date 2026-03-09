@@ -3,7 +3,7 @@ from flask_restx import Api, Resource
 from .config import Config
 from .exts import db
 
-# NOTE: .env must be in the new_app directory unlike the old one. The current bootstrap is outdated and generates on in the root.
+# NOTE: The .env file should be in this location because the root directory .env is deprecated.
 # DATABASE_URL="database@link.com"
 # this URL can be obtained on the Neon dashboard: "Connect" -> "Connection string"
 # do not upload database url to github, it is a secret (see settings)
