@@ -3,9 +3,11 @@
 # Will change to update PriceHistory (not yet made)
 
 import requests
-from app import app, db, Card
-from flask_sqlalchemy.dialects.postgresql import insert
-from flask_sqlalchemy import or_
+from new_app.app import app
+from new_app.exts import db
+from new_app.models import Card
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import or_
 
 def fetch_scryfall_data():
     print("Fetching scryfall data...")
