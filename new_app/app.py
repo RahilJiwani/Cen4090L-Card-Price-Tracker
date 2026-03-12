@@ -20,7 +20,10 @@ def create_app():
     )
 
     from .resources.test import api as test_namespace
+    from .resources.auth import api as auth_namespace
+
     api.add_namespace(test_namespace)
+    api.add_namespace(auth_namespace)
 
     @api.route("/test")
     class TestResource(Resource):

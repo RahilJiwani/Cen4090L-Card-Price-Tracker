@@ -12,7 +12,7 @@ function SignupPage() {
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
 
-    const SIGNUP_ENDPOINT = "/api/signup";
+    const SIGNUP_ENDPOINT = "/api/auth/signup";
 
     function validate() {
         const u = username.trim();
@@ -71,7 +71,7 @@ function SignupPage() {
                 throw new Error(message);
             }
 
-            navigate("/login");
+            navigate("/dashboard");
         } catch (err) {
             setError(err.message || "Signup failed.");
         } finally {
