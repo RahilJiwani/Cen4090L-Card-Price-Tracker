@@ -1,34 +1,22 @@
+*Last updated 3/22/2026*
 # Cen4090L-Card-Price-Tracker
 Software engineering Lab project based around making a python program and website that aims to notify users when the price of a Magic The Gathering card falls below a certain amount.
 
-## Team Setup Instructions
-
-If you are a team member cloning this repo for the first time, follow these steps to get your local environment running.
-
-### Prerequisites
-- Python 3.9+ installed
-- PostgreSQL installed locally
+## Prerequisites
+- Python 3.14+ installed
 - NodeJS and npm
 
-### Step 1: Bootstrap the Environment
-We have a fully automated bootstrap script that sets up your Python virtual environment, installs all dependencies, creates the database, and loads the schema.
+## Setup
+We have created multiple .ps1 scripts to run for workflow automation. All scripts are located in the ```./scripts``` directory. The first and main one is the ```./scripts/bootstrap.ps1```. The boostrap focuses on 2 parts:
+- Initial setup
+- Installing dependencies
 
-1. Open a PowerShell terminal in the root of the project.
-2. Run the bootstrap script:
-   ```powershell
-   .\scripts\bootstrap.ps1
-   ```
-3. The script will prompt you for your **postgres superuser password** (the one you set when installing PostgreSQL). Type it in the terminal and press Enter.
-4. The script will automatically generate your `.env` file for you.
+First it runs checks for all prerequisites. Then it creates a venv for Python (if not already setup). Then it install all dependencies that are used in the project. Then it creates a .env (if not already setup). __Bootstrap should be ran in two cases: when the repo is first added and when dependencies are changed (likely every commit)__.
 
-### Step 2: Run the Web App
-Once bootstrap completes successfully, you can start the Flask development server:
+## Running
+To run the project we use ```./scripts/run.ps1```. It will open two consoles: one for back-end and one for front-end. Currently these have to be closed manual, but we are looking for a solution ;(.
 
-```powershell
-.\scripts\run.ps1
-```
+## Maintainance
+Dependencies have bugs and they can be exploited. Keeping up with all the latest depencies and what updates is hard so we developed a script for it: ```./scripts/update_deps.ps1```. This script looks at all of the dependencies for both python and for npm and installs the latests version. __This should only be run if you are planning on reading the changelogs to make sure nothing breaks__. While it is nice to update stuff, it can break stuff if developers remove stuff and do whatever so it is important that when you do this you must check if the updates break anything.
 
-The app will now be running at `http://127.0.0.1:5174/`.
-
----
-*Note: You only need to run `bootstrap.ps1` once. After that, just use `run.ps1` to start the app for development.*
+Thats all thanks :D!!!!
