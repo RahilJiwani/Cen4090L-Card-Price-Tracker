@@ -1,68 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import useAuth from "../Hooks/useAuth.js";
 
 function DashboardPage() {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        let mounted = true;
-
-        async function fetchUser() {
-            try {
-                const res = await fetch("/api/auth/me", { credentials: "include" });
-                if (!res.ok) {
-                    if (res.status === 401) {
-                        navigate("/login", { replace: true });
-                    }
-                    return;
-                }
-                const data = await res.json();
-                if (mounted) {
-                    setUser(data);
-                    setLoading(false);
-                }
-            } catch (err) {
-                console.error("Failed to authenticate session", err);
-                if (mounted) navigate("/login", { replace: true });
-            }
-        }
-
-        fetchUser();
-
-        return () => {
-            mounted = false;
-        };
-    }, [navigate]);
-
-    async function handleLogout() {
-        try {
-            await fetch("/api/auth/logout", {
-                method: "POST",
-                credentials: "include",
-            });
-            navigate("/login");
-        } catch (err) {
-            console.error("Failed to logout", err);
-        }
-    }
-
-    if (loading) {
-        return (
-            <div style={styles.page}>
-                <h2 style={styles.loading}>Loading Scryfall data...</h2>
-            </div>
-        );
-    }
+    const { user } = useAuth();
 
     return (
         <div style={styles.page}>
             <div style={styles.nav}>
                 <h1 style={styles.title}>Welcome to the Tavern, {user.username}!</h1>
-                <button style={styles.logoutBtn} onClick={handleLogout}>
-                    Log Out
-                </button>
             </div>
             <div style={styles.content}>
                 <div style={styles.card}>
@@ -94,10 +39,6 @@ const styles = {
     title: {
         fontSize: "1.5rem",
         margin: 0,
-    },
-    logoutBtn: {
-        padding: "6px 12px",
-        cursor: "pointer",
     },
     loading: {
         fontFamily: "sans-serif",

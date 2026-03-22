@@ -1,10 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
+import { AuthProvider } from './Contexts/AuthContext.jsx'
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Router>
-    <App />
-  </Router>
+  <BrowserRouter>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </BrowserRouter>
 )

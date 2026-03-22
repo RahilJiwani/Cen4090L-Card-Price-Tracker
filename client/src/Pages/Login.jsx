@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth.js";
+
 
 function LoginPage() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-
-    const LOGIN_ENDPOINT = "/api/auth/login";
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -23,27 +24,10 @@ function LoginPage() {
         try {
             setSubmitting(true);
 
-            const res = await fetch(LOGIN_ENDPOINT, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    username: username.trim(),
-                    password,
-                }),
+            await login({
+                username: username.trim(),
+                password,
             });
-
-            if (!res.ok) {
-                let message = `Login failed (${res.status})`;
-                try {
-                    const data = await res.json();
-                    message = data.error || data.message || message;
-                } catch {
-                    const text = await res.text().catch(() => "");
-                    if (text) message = text;
-                }
-                throw new Error(message);
-            }
 
             // Route to dashboard on successful login
             navigate("/dashboard");

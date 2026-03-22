@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../Hooks/useAuth.js";
+
 
 function SignupPage() {
     const navigate = useNavigate();
+    const { signup } = useAuth();
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -11,8 +14,6 @@ function SignupPage() {
 
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-
-    const SIGNUP_ENDPOINT = "/api/auth/signup";
 
     function validate() {
         const u = username.trim();
@@ -48,28 +49,11 @@ function SignupPage() {
         try {
             setSubmitting(true);
 
-            const res = await fetch(SIGNUP_ENDPOINT, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    username: username.trim(),
-                    email: email.trim().toLowerCase(),
-                    password,
-                }),
+            await signup({
+                username: username.trim(),
+                email: email.trim().toLowerCase(),
+                password,
             });
-
-            if (!res.ok) {
-                let message = `Signup failed (${res.status})`;
-                try {
-                    const data = await res.json();
-                    message = data.error || data.message || message;
-                } catch {
-                    const text = await res.text().catch(() => "");
-                    if (text) message = text;
-                }
-                throw new Error(message);
-            }
 
             navigate("/dashboard");
         } catch (err) {

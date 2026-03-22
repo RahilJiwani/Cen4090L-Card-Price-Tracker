@@ -1,0 +1,76 @@
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
+async function parseErrorResponse(res, fallbackMessage) { // managed here to decouple the error parsing from the pages and contexts
+    let message = fallbackMessage;
+
+    try {
+        const data = await res.json();
+        message = data.error || data.message || message;
+    } catch {
+        const text = await res.text().catch(() => "");
+        if (text) {
+            message = text;
+        }
+    }
+
+    throw new Error(message);
+}
+
+export async function loginUser({ username, password }) {
+    const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: JSON_HEADERS,
+        credentials: "include",
+        body: JSON.stringify({ username, password }),
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Login failed (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function signupUser({ username, email, password }) {
+    const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: JSON_HEADERS,
+        credentials: "include",
+        body: JSON.stringify({ username, email, password }),
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Signup failed (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function logoutUser() {
+    const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Logout failed (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function getCurrentUser() {
+    const res = await fetch("/api/auth/me", {
+        credentials: "include",
+    });
+
+    if (res.status === 401) {
+        return null;
+    }
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Auth check failed (${res.status})`);
+    }
+
+    return res.json();
+}
