@@ -13,10 +13,10 @@ if (!(Test-Path ".\client\package.json")) {
     exit 1
 }
 
-Write-Host "Starting the web app on port 8080..." -ForegroundColor Green
+Write-Host "Starting the web app on port 5008..." -ForegroundColor Green
 $env:FLASK_APP = "new_app.app:app" # can be changed to app.web_app:app for old version
 $env:FLASK_DEBUG = "1"
-Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", "py -m flask run --port 8080"
+Start-Process -FilePath "powershell" -ArgumentList "-NoExit", "-Command", "py -m flask run"
 
 Start-Sleep -Seconds 2
 
