@@ -29,10 +29,11 @@ We are still using a 3-layer system:
 4) [OTHER ISSUES?] 
   One issue we had was troubles with getting Github workflow to run seed.py daily. We attempted to implement this recently so this should be solved early 
   during Increment 3. For now seed.py will be run manually. 
+  Another issue that had come up was that the issue with some testing ports and had to change for certain users that were running something else with a common port
 
 5) 
 a) [ADD CONTRIBUTIONS] Rachel Armstrong added databases progress to Progress Report document.
-b) Tyler Keller worked on the requirement and design document
+b) Tyler Keller& Angus Liu worked on the requirement and design document
 c) Cassadi Quinones worked on the implementation and testing document. 
 d) [SOURCE CODE WORK] Rachel Armstrong worked on database models and database updating script. 
 e) Tyler Keller and Rachel Armstrong worked on the video.
@@ -42,9 +43,9 @@ e) Tyler Keller and Rachel Armstrong worked on the video.
 7) [Update me :)]
 Dear [shareholders],
 This is the development team, we are writing to provide an update on the development of your MTG card price tracking platform
-The previous version of the tool worked but wasn't built to be deployed to real users. We caught this early. 
-We're rebuilding the foundation properly so this doesn't become a bigger problem later. This is a short-term delay for a much more reliable product. The goal will be to update everything with future proofing and scalability in mind. This way it will be cheaper for future development and faster development cycles.
-We expect to have an updated version ready for review by next development update.
+We have created a current working prototype which allows you to get a login and signup of the website. by the next progress report we will get the cards and much of the functionaility avaliable.
+Currently we are working on email verfication so that the user will be informed of a card price limits the user will set.
+We will be showing a more comeplete product by the next report.
 Best regards,
 MTG development team
 
