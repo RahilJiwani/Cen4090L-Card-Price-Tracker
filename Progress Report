@@ -1,4 +1,4 @@
-- Increment 1 -
+- Increment 2 -
 Group #17
 1) Team Members
 Rachel Armstrong (rma23f) Race11e
@@ -6,22 +6,40 @@ Rahil Jiwani (rsj22a) RahilJiwani
 Tyler Keller (tjk24c) Hobbs04067
 Angus Liu (AL21bk) K1nightmar3
 Cassadi Quinones (cxq22) cassadiq
+
 2) Card-Price-Tracker
 a python program and website that aims to notify users when the price of a Magic the Gathering card falls below a certain amount.
-3)During this increment we decided on deploying an existing project. Our team decided that to do so we needed to apply a different architectural framework. The design plans became a 3-layer system:
-•	A React frontend handling all UI and user interaction
-•	A Flask API handling data requests and business logic
-•	A Neon cloud-hosted PostgreSQL database accessible to the whole team
-The main accomplishment during this increment was documenting and understanding the architecture we had in mind, so we could prevent integration issues later on. The team identified that converting Flask into an API required defining an API contract a shared agreement on how the frontend and backend communicate before any code is written. The team also created a list of tasks and issues that need to be completed going into the next increment.
-4) An issue was knowledge gap of the inherited code base and the decision to use React as that is what our frontend developer decided on using. This caused us to redesign our code to be focused on that decision which had effects like flask API. The idea of deploying this project also created an issue with the PostgreSQL so we decided to use neon for our cloud DB.
+
+3) [OTHER PROGRESS]
+
+  The database has been updated to include the following tables:
+    Cards: including internal card id (PK), scryfall id, card names, rarity, set code, collector number, front and back (if needed) image urls, artist, and colors. 
+      This is linked to the Price History and Watchlist tables.  
+	  Users: Including internal user id(PK), username, email, password hash, and date user was created. This is linked to the Watchlist table. 
+	  PriceHistory: including internal id (PK), card id (FK), date the price was grabbed, price for card, and price for foil version of card.  
+	  Watchlist: including user id (FK) and card_id (FK). 
+ 
+We have a script that updates the database for new cards as well as updates the PriceHistory table. Entries in PriceHistory are pruned after 30 days.  
+ 
+We are still using a 3-layer system: 
+  - React frontend 
+	- Flask API backend 
+	- Neon cloud-hosted PostgreSQL database
+
+4) [OTHER ISSUES?] 
+  One issue we had was troubles with getting Github workflow to run seed.py daily. We attempted to implement this recently so this should be solved early 
+  during Increment 3. For now seed.py will be run manually. 
+
 5) 
-a) Angus Liu worked on the Progress report from creating the video to finding the issues and documenting our progress.
+a) Rachel Armstrong added databases progress to Progress Report document.
 b) Tyler Keller worked on the requirement and design document
-c) Rachel Armstrong worked on the implementation and testing document 
-d) Rahil Jiwani created the make file and the initial main branch. The actual code has been untouched
-e) Rahil Jiwani worked on the video.
-6) The teams plan for the next increment is to create the systems like the flask API. Remaking the entire html into a React system and the new Neon PostgreSQL. This will take a lot of code rewriting and many changes to the current codebase.
-7) 
+c) [IMPLEMENTATION AND TEST DOC]
+d) [SOURCE CODE WORK] Rachel Armstrong worked on database models and database updating script. 
+e) Tyler Keller and Rachel Armstrong worked on the video.
+
+6) The teams plans to continue frontend and backend development for user alert emailing, user login, price tracking, and search functionality.
+
+7) [Update me :)]
 Dear [shareholders],
 This is the development team, we are writing to provide an update on the development of your MTG card price tracking platform
 The previous version of the tool worked but wasn't built to be deployed to real users. We caught this early. 
@@ -32,4 +50,4 @@ MTG development team
 
 8) Link to video
 Paste here the link to your video.
-https://drive.google.com/file/d/1I2uZJLjznutO-OF7q19EQ51wi8oI8N3B/view?usp=sharing
+[NEW LINK]
