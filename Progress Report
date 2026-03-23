@@ -10,7 +10,9 @@ Cassadi Quinones (cxq22) cassadiq
 2) Card-Price-Tracker
 a python program and website that aims to notify users when the price of a Magic the Gathering card falls below a certain amount.
 
-3) [OTHER PROGRESS]
+3) 
+
+  The frontend now has a user login/sign up page. 
 
   The database has been updated to include the following tables:
     Cards: including internal card id (PK), scryfall id, card names, rarity, set code, collector number, front and back (if needed) image urls, artist, and colors. 
@@ -22,7 +24,7 @@ a python program and website that aims to notify users when the price of a Magic
 We have a script that updates the database for new cards as well as updates the PriceHistory table. Entries in PriceHistory are pruned after 30 days.  
  
 We are still using a 3-layer system: 
-  - React frontend 
+ - React frontend 
 	- Flask API backend 
 	- Neon cloud-hosted PostgreSQL database
 
@@ -32,15 +34,15 @@ We are still using a 3-layer system:
   Another issue that had come up was that the issue with some testing ports and had to change for certain users that were running something else with a common port
 
 5) 
-a) [ADD CONTRIBUTIONS] Rachel Armstrong added databases progress to Progress Report document.
-b) Tyler Keller& Angus Liu worked on the requirement and design document
+a) Rachel Armstrong added databases progress to Progress Report document. Angus Liu added issues and shareholder letter. 
+b) Tyler Keller & Angus Liu worked on the requirement and design document
 c) Cassadi Quinones worked on the implementation and testing document. 
-d) [SOURCE CODE WORK] Rachel Armstrong worked on database models and database updating script. 
+d) Rachel Armstrong worked on database models and database updating script. Tyler Keller, Rahil Jiwani, Angus Liu worked on backend development. Cassadi Quinones worked on frontend development. 
 e) Tyler Keller and Rachel Armstrong worked on the video.
 
 6) The teams plans to continue frontend and backend development for user alert emailing, user login, price tracking, and search functionality.
 
-7) [Update me :)]
+7) 
 Dear [shareholders],
 This is the development team, we are writing to provide an update on the development of your MTG card price tracking platform
 We have created a current working prototype which allows you to get a login and signup of the website. by the next progress report we will get the cards and much of the functionaility avaliable.
