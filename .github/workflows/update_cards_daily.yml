@@ -33,6 +33,5 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           PYTHONPATH: ${{ github.workspace }}
-        run: |
-          cd new_app
-          python seed.py
+        working-directory: ./new_app
+        run: python seed.py
