@@ -27,4 +27,4 @@ jobs:
       - name: Run Scryfall Seed Script
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: python seed.py
+        run: python new_app/seed.py
