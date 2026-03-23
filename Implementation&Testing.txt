@@ -3,7 +3,7 @@ Software Implementation and Testing Document
 
 For Group <17> 
 
-Version 1.0 
+Version 2.0 
 
 Authors:  
 
@@ -31,13 +31,29 @@ Platforms, APIs, Databases, and other technologies used (5 points)
 
   MTGJson and Scryfall API will be used for card information, card images, and price history.  
 
+  Automation scripts set up strictly for Windows are used to develop and configure the environment.
+
  
 
 Execution-based Functional Testing (10 points) 
 
-  Some functional testing was performed by running the website on local machine, however the frontend and some of the backend of this is going to be reworked. Most of what is on the Github repository right now is an old project by Rahil Jiwani, and is implemented with html and python.  
-
+  Some functional testing was performed by running the website on local machines using our Windows automation scripts.  
  
-  A Neon database has been set-up, with the URL being a Github Secret variable. Connectivity to database was tested on local machine.  
+  We tested the routing logic and the newly built navigation bar to make sure navigation is simple and easy to understand.  
 
- 
+
+
+Execution-based Non-Functional Testing (10 points)
+
+  We performed non-functional testing by checking how the UI looked on the screen, verifying that the front-end works properly on a computer monitor interface. We tested the inline styles of the application to ensure the MTG-themed colors rendered correctly.
+
+  We also tested the signup form to make sure it includes accessibility tags for screen readers, and validates that passwords meet a required minimum character count.
+
+
+
+Non-Execution-based Testing (10 points)
+
+  We performed code reviews and walkthroughs to clean up our files and ensure that user passwords will be properly hashed in the backend. For example, we looked at our App.jsx file and decided to move the authentication logic into its own separate component so the routing code was cleaner and easier to read. We also inspected terminal errors to figure out missing file imports and to fix version conflicts when installing our NPM packages.
+
+
+
