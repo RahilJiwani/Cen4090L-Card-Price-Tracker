@@ -5,7 +5,7 @@ on:
     - cron: '0 8 * * *'
   push:
     branches:
-      - Increment2
+      - Increment_2
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: Increment2
+          ref: Increment_2
 
       - name: Set up Python
         uses: actions/setup-python@v5
