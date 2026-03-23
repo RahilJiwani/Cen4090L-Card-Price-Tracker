@@ -12,13 +12,36 @@ class Card(db.Model):
     collector_num = db.Column(db.String(50), nullable=False)
     image_url = db.Column(db.Text, nullable=True)
 
+    # ADDED: Did not know there were some two-sided cards, also added artist + colors
+    image_url_back = db.Column(db.Text, nullable=True)
+    artist = db.Column(db.String(50), nullable=True)
+    colors = db.Column(db.String(50), nullable=True) # Stored as single letters: 'W' or 'W,B' for multi
+
+
+    price_history = db.relationship('PriceHistory', backref='card', cascade='all, delete-orphan')
+
+class PriceHistory(db.Model):
+    __tablename__ = 'price_history'
+    id = db.Column(db.Integer, primary_key=True)
+    card_id = db.Column(db.Integer, db.ForeignKey('cards.card_id'), nullable=False)
+    date = db.Column(db.DateTime, default=datetime.datetime.today(), nullable=False)
+
+    price = db.Column(db.Float, nullable=True)
+    price_foil = db.Column(db.Float, nullable=True)
+
+    __table_args__ = (
+            db.UniqueConstraint('card_id', 'date', name='card_id_date'),
+    )
+
+
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.today())
+    created_at = db.Column(db.DateTime, default=datetime.datetime.today)
 
     # Many-to-many relationship
     watchlist = db.relationship('Card', secondary='watchlists', backref='watched_by')
