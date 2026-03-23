@@ -3,6 +3,9 @@ name: Daily Scryfall Sync
 on:
   schedule:
     - cron: '0 8 * * *'
+  push:
+    branches:
+      - Increment2
   workflow_dispatch:
 
 jobs:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: Increment2
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,4 +32,7 @@ jobs:
       - name: Run Scryfall Seed Script
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: python new_app/seed.py
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          cd new_app
+          python seed.py
