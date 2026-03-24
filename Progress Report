@@ -8,11 +8,13 @@ Angus Liu (AL21bk) K1nightmar3
 Cassadi Quinones (cxq22) cassadiq
 
 2) Card-Price-Tracker
-a python program and website that aims to notify users when the price of a Magic the Gathering card falls below a certain amount.
+a Python program and website that aims to notify users when the price of a Magic: The Gathering card falls below a certain amount.
 
 3) 
 
   The frontend now has a user login/sign up page. 
+
+  We implemented user login and account creation with password checking, but we still need the email portion of the authentication.
 
   The database has been updated to include the following tables:
     Cards: including internal card id (PK), scryfall id, card names, rarity, set code, collector number, front and back (if needed) image urls, artist, and colors. 
@@ -28,16 +30,17 @@ We are still using a 3-layer system:
 	- Flask API backend 
 	- Neon cloud-hosted PostgreSQL database
 
-4) [OTHER ISSUES?] 
+4) 
   One issue we had was troubles with getting Github workflow to run seed.py daily. We attempted to implement this recently so this should be solved early 
   during Increment 3. For now seed.py will be run manually. 
   Another issue that had come up was that the issue with some testing ports and had to change for certain users that were running something else with a common port
 
 5) 
-a) Rachel Armstrong added databases progress to Progress Report document. Angus Liu added issues and shareholder letter. 
+a) Rachel Armstrong added databases progress to Progress Report document. Angus Liu added issues and shareholder letter. Rahil Jiwani added source code credits and issues
 b) Tyler Keller & Angus Liu worked on the requirement and design document
 c) Cassadi Quinones worked on the implementation and testing document. 
 d) Rachel Armstrong worked on database models and database updating script. Tyler Keller, Rahil Jiwani, Angus Liu worked on backend development. Cassadi Quinones worked on frontend development. 
+Rahil Jiwani, Angus Liu, and Tyler Keller worked on the login authentication system. Rahil Jiwani refactored the backend away from the local database server model to implement Neon SQL instead 
 e) Tyler Keller and Rachel Armstrong worked on the video.
 
 6) The teams plans to continue frontend and backend development for user alert emailing, user login, price tracking, and search functionality.
