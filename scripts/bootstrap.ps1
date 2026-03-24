@@ -3,42 +3,46 @@ $PythonAppPath = "$ProjectRoot\new_app"
 $ReactAppPath = "$ProjectRoot\client"
 
 # check for correct path
-if (!(Test-Path $PythonAppPath) -or !(Test-Path $ReactAppPath))
-{
-throw "This script must be run from the project root directory."
+if (!(Test-Path $PythonAppPath) -or !(Test-Path $ReactAppPath)) {
+    throw "This script must be run from the project root directory."
 }
 
 $envFile = "$PythonAppPath\.env"
 $venvPath = "$ProjectRoot\.venv"
 
+function Write-Utf8NoBomFile {
+    param(
+        [Parameter(Mandatory = $true)] [string] $Path,
+        [Parameter(Mandatory = $true)] [string] $Content
+    )
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
+}
+
 Write-Host "== Cen4090L Card Price Tracker Bootstrap ==" -ForegroundColor Cyan
 
 # check if node and npm are installed
-try
-{
-node -v | Out-Null
-npm -v | Out-Null
+try {
+    node -v | Out-Null
+    npm -v | Out-Null
 }
-catch
-{
-throw "Node.js (or npm) not found. Install Node.js before running bootstrap."
+catch {
+    throw "Node.js (or npm) not found. Install Node.js before running bootstrap."
 }
 
 # check for python
-try
-{
-py -V | Out-Null
+try {
+    py -V | Out-Null
 }
-catch
-{
-throw "Python not found. Install Python before running bootstrap."
+catch {
+    throw "Python not found. Install Python before running bootstrap."
 }
 
 # create venv if its missing
-if (!(Test-Path "$venvPath"))
-{
-Write-Host "Creating virtual environment (.venv)..." -ForegroundColor Yellow
-py -m venv "$venvPath"
+if (!(Test-Path "$venvPath")) {
+    Write-Host "Creating virtual environment (.venv)..." -ForegroundColor Yellow
+    py -m venv "$venvPath"
 }
 
 # enter venv
@@ -52,22 +56,18 @@ py -m pip install -r "$ProjectRoot\requirements.txt"
 
 # install npm dependencies
 $clientPath = "$ProjectRoot\client"
-if (Test-Path "$clientPath\package.json")
-{
-Write-Host "Installing client dependencies..." -ForegroundColor Yellow
-Push-Location $clientPath
-npm install --legacy-peer-deps
-Pop-Location
+if (Test-Path "$clientPath\package.json") {
+    Write-Host "Installing client dependencies..." -ForegroundColor Yellow
+    Push-Location $clientPath
+    npm install --legacy-peer-deps
+    Pop-Location
 }
 
 # Create .env if missing
-if (!(Test-Path $envFile))
-{
-$DatabaseUrl = Read-Host "Enter Neon PostgreSQL Connection String or leave blank to enter later"
-
-@"
-DATABASE_URL="$DatabaseUrl"
-"@ | Out-File -Encoding utf8 $envFile
+if (!(Test-Path $envFile)) {
+    $DatabaseUrl = Read-Host "Enter Neon PostgreSQL Connection String or leave blank to enter later"
+    $envContents = "DATABASE_URL=$DatabaseUrl`r`nSECRET_KEY=something_awesome_and_secret"
+    Write-Utf8NoBomFile -Path $envFile -Content $envContents
 }
 
 Write-Host ""

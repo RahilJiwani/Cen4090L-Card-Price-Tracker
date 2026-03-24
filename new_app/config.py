@@ -13,6 +13,6 @@ if not env_path.is_file():
         print("WARNING: .env should be moved to the new_app directory for better organization and to avoid confusion. The current .env in the root directory is deprecated.")
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-fallback')
+    SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-fallback')
     SQLALCHEMY_DATABASE_URI = config('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False # should be moved to .env for security.
