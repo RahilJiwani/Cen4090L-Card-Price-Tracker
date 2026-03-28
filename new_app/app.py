@@ -2,6 +2,7 @@ from flask import Flask, redirect
 from flask_restx import Api, Resource
 from .config import Config
 from .exts import db
+from flask_migrate import Migrate
 
 # NOTE: The .env file should be in this location because the root directory .env is deprecated.
 # DATABASE_URL="database@link.com"
@@ -12,6 +13,8 @@ def create_app():
     app.config.from_object(Config)
 
     db.init_app(app)
+
+    migrate = Migrate(app, db)
 
     api = Api(
         app,

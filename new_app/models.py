@@ -43,6 +43,10 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.today)
 
+# added for email verification
+    is_verified = db.Column(db.Boolean, default=False, nullable=False)
+    verification_code = db.Column(db.String(6), nullable=True)  # stores the code temporarily
+
     # Many-to-many relationship
     watchlist = db.relationship('Card', secondary='watchlists', backref='watched_by')
 
@@ -55,6 +59,10 @@ class User(db.Model):
     # Use to authenticate password
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def verify_email(self):
+        # Placeholder for email verification logic
+        pass
 
 class Watchlist(db.Model):
     __tablename__ = 'watchlists'
