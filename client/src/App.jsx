@@ -3,6 +3,7 @@ import { ProtectedRoute, PublicOnlyRoute } from './Components/RouteGuards.jsx'
 import RootRedirect from './Components/RootRedirect.jsx' 
 import Navbar from './Components/Navbar.jsx' 
 import SignupPage from './Pages/Signup.jsx'
+import SignupVerification from './Pages/SignupVerification.jsx'
 import LoginPage from './Pages/Login.jsx'
 import DashboardPage from './Pages/Dashboard.jsx'
 import SearchPage from './Pages/Search.jsx'
@@ -33,6 +34,14 @@ function App() {
                         element={
                             <PublicOnlyRoute>
                                 <LoginPage />
+                            </PublicOnlyRoute>
+                        }
+                    />
+                    <Route
+                        path="/signup-verification"
+                        element={
+                            <PublicOnlyRoute>
+                                <SignupVerification />
                             </PublicOnlyRoute>
                         }
                     />
