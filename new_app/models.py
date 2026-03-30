@@ -45,7 +45,7 @@ class User(db.Model):
 
 # added for email verification
     is_verified = db.Column(db.Boolean, default=False, nullable=False)
-    verification_code = db.Column(db.String(6), nullable=True)  # stores the code temporarily
+    verification_token = db.Column(db.String(100), nullable=True)
 
     # Many-to-many relationship
     watchlist = db.relationship('Card', secondary='watchlists', backref='watched_by')
