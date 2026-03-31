@@ -1,6 +1,5 @@
 from flask import request, session
 from flask_restx import Namespace, Resource
-from ..exts import db
 from ..models import User
 import secrets
 from flask_mail import Message
@@ -82,39 +81,6 @@ class VerifyEmail(Resource):
             db.session.rollback()
             return {"error": "Internal server error"}, 500
 
-
-@api.route('/signup')
-class Signup(Resource):
-    def post(self):
-        data = request.get_json()
-        if not data:
-            return {"error": "Invalid request payload"}, 400
-            
-        username = data.get('username')
-        email = data.get('email')
-        password = data.get('password')
-
-        if not username or not email or not password:
-            return {"error": "Missing required fields"}, 400
-
-        if User.query.filter_by(username=username).first():
-            return {"error": "Username already exists"}, 400
-
-        if User.query.filter_by(email=email).first():
-            return {"error": "Email already exists"}, 400
-
-        try:
-            new_user = User(username=username, email=email)
-            new_user.set_password(password)
-            db.session.add(new_user)
-            db.session.commit()
-            
-            # Log the user in automatically upon successful registration
-            session['user_id'] = new_user.id
-            return {"message": "User created successfully", "user_id": new_user.id}, 201
-        except Exception as e:
-            db.session.rollback()
-            return {"error": "Internal server error"}, 500
 
 
 @api.route('/login')

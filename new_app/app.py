@@ -1,7 +1,7 @@
 from flask import Flask, redirect
 from flask_restx import Api, Resource
 from .config import Config
-from .exts import db
+from .exts import db , mail
 from flask_migrate import Migrate
 
 # NOTE: The .env file should be in this location because the root directory .env is deprecated.
