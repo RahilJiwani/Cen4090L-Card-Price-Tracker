@@ -20,7 +20,7 @@ function App() {
                 <Routes>
                     {}
                     <Route path="/" element={<RootRedirect />} />
-
+                    //will add back protected routes after testing
                     <Route
                         path="/signup"
                         element={
@@ -48,25 +48,17 @@ function App() {
                     <Route
                         path="/dashboard"
                         element={
-                            <ProtectedRoute>
                                 <DashboardPage />
-                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/search"
-                        element={
-                            <ProtectedRoute>
-                                <SearchPage />
-                            </ProtectedRoute>
-                        }
+                        element={<SearchPage />}
                     />
                     <Route
                         path="/account"
                         element={
-                            <ProtectedRoute>
                                 <AccountPage />
-                            </ProtectedRoute>
                         }
                     />
                     <Route path="*" element={<NotFoundPage />} />
