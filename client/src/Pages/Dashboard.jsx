@@ -3,6 +3,13 @@ import useAuth from "../Hooks/useAuth.js";
 
 function DashboardPage() {
     const { user } = useAuth();
+    const [watchlist, setWatchlist] = React.useState([]);
+
+    React.useEffect(() => {
+        fetch("/api/dashboard/watchlist", { credentials: "include" })
+            .then(res => res.json())
+            .then(data => setWatchlist(data.watchlist || []));
+    }, []);
 
     return (
         <div style={styles.page}>
@@ -12,9 +19,19 @@ function DashboardPage() {
             <div style={styles.content}>
                 <div style={styles.card}>
                     <h2>Your Watchlist</h2>
-                    <p style={{ color: "#aaa", marginTop: "10px" }}>
-                        It's quiet here. Search for some cards to add to your collection tracking.
-                    </p>
+                    {watchlist.length === 0 ? (
+                        <p style={{ color: "#aaa", marginTop: "10px" }}>
+                            It's quiet here. Search for some cards to add to your collection tracking.
+                        </p>
+                    ) : (
+                        <ul style={{ marginTop: "15px", listStyle: "none", padding: 0 }}>
+                            {watchlist.map(card => (
+                                <li key={card.id} style={{ padding: "8px 0", borderBottom: "1px solid #eee", color: "#333" }}>
+                                    <strong>{card.name}</strong> - {card.set.toUpperCase()} ({card.price})
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
             </div>
         </div>

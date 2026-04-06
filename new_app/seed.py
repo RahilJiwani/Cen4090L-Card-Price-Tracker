@@ -6,7 +6,7 @@ import requests
 import datetime
 from new_app.app import app
 from new_app.exts import db
-from new_app.models import Card
+from new_app.models import Card, PriceHistory
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import or_
 

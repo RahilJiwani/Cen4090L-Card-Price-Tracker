@@ -20,7 +20,7 @@ function App() {
                 <Routes>
                     {}
                     <Route path="/" element={<RootRedirect />} />
-                    //will add back protected routes after testing
+                    {/* will add back protected routes after testing */}
                     <Route
                         path="/signup"
                         element={

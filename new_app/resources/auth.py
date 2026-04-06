@@ -1,12 +1,25 @@
 from flask import request, session
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 from ..exts import db
 from ..models import User
 
 api = Namespace('auth', description='Authentication related operations')
 
+# Define request/response models for Swagger
+signup_model = api.model('Signup', {
+    'username': fields.String(required=True, description='Unique username', example='johndoe'),
+    'email': fields.String(required=True, description='User email address', example='john@example.com'),
+    'password': fields.String(required=True, description='Password', example='secret123'),
+})
+
+login_model = api.model('Login', {
+    'username': fields.String(required=True, description='Username', example='johndoe'),
+    'password': fields.String(required=True, description='Password', example='secret123'),
+})
+
 @api.route('/signup')
 class Signup(Resource):
+    @api.expect(signup_model)
     def post(self):
         data = request.get_json()
         if not data:
@@ -41,6 +54,7 @@ class Signup(Resource):
 
 @api.route('/login')
 class Login(Resource):
+    @api.expect(login_model)
     def post(self):
         data = request.get_json()
         if not data:
