@@ -70,8 +70,8 @@ def update_prices(price_data):
     db.session.commit()
 
 def prune_old_prices():
-    # Removes prices older than 30 days
-    old = datetime.date.today() - datetime.timedelta(days=30)
+    # Removes prices older than 14 days
+    old = datetime.date.today() - datetime.timedelta(days=13)
     deleted = db.session.query(PriceHistory).filter(PriceHistory.date < old).delete()
     db.session.commit()
     print(f"{deleted} prices have been deleted.")
