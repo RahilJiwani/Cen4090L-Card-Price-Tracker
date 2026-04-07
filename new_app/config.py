@@ -4,13 +4,17 @@ from dotenv import load_dotenv
 import os
 
 env_path = Path(__file__).parent / '.env'
+root_env_path = Path('.') / '.env'
 
-if not env_path.is_file():
-    env_path = Path('.') / '.env'
-    if not env_path.is_file():
-        raise FileNotFoundError(f"Environment file not found. Please create a .env file in the new_app directory with the necessary configuration.")
-    else:
-        print("WARNING: .env should be moved to the new_app directory for better organization and to avoid confusion. The current .env in the root directory is deprecated.")
+if env_path.is_file():
+    load_dotenv(env_path)
+elif root_env_path.is_file():
+    print("WARNING: .env should be moved to the new_app directory for better organization and to avoid confusion. The current .env in the root directory is deprecated.")
+    load_dotenv(root_env_path)
+else:
+    print("Environment file not found. Please create a .env file in the new_app directory with the necessary configuration.")
+    print("Using system environment variables.")
+
 
 class Config:
     SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-fallback')
