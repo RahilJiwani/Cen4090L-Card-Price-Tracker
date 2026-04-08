@@ -1,27 +1,35 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth.js';
 
 function Navbar() {
-    const { isLoggedIn, logout } = useAuth();
+    // changed isLoggedIn to user to match auth hook
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        if (logout) {
+            await logout();
+        }
+        // redirect the user to the login page after logging out
+        navigate('/login');
+    };
 
     return (
         <nav style={styles.nav}>
             <div style={styles.brand}>
-                {/* Clicking the logo takes you home */}
                 <Link to="/" style={styles.brandLink}>
                     MTG Price Tracker
                 </Link>
             </div>
 
             <div style={styles.navLinks}>
-                {isLoggedIn ? (
+                {user ? (
                     <>
                         <Link to="/dashboard" style={styles.link}>Dashboard</Link>
                         <Link to="/search" style={styles.link}>Search Cards</Link>
                         <Link to="/account" style={styles.link}>Account</Link>
-                        {/* Assuming your useAuth hook has a logout function! */}
-                        <button onClick={logout} style={styles.logoutButton}>
+                        <button onClick={handleLogout} style={styles.logoutButton}>
                             Log Out
                         </button>
                     </>
