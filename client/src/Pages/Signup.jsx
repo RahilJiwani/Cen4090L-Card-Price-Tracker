@@ -64,45 +64,48 @@ function SignupPage() {
     }
 
     return (
-        <div style={styles.page}>
-            <div style={styles.card}>
-                {/* WUBRG Color Bar */}
-                <div style={styles.manaBar} />
+        <div className="auth-shell">
+            <div className="auth-card">
+                <div className="accent-bar" />
 
-                <h1 style={styles.title}>MTG Price Tracker</h1>
-                <p style={styles.subtitle}>
+                <h1 className="auth-title">MTG Price Tracker</h1>
+                <p className="auth-subtitle">
                     Create an account to track cards and get notified when prices drop.
                 </p>
 
-                {error && <div style={styles.error}>{error}</div>}
+                {error && <div className="error-banner">{error}</div>}
 
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    <label htmlFor="username" style={styles.label}>Username</label>
-                    <input
-                        id="username"
-                        style={styles.input}
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Planeswalker"
-                        required
-                    />
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <div className="form-group">
+                        <label htmlFor="username" className="field-label">Username</label>
+                        <input
+                            id="username"
+                            className="text-input"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Planeswalker"
+                            required
+                        />
+                    </div>
 
-                    <label htmlFor="email" style={styles.label}>Email</label>
-                    <input
-                        id="email"
-                        style={styles.input}
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="mage@ravnica.com"
-                        required
-                    />
+                    <div className="form-group">
+                        <label htmlFor="email" className="field-label">Email</label>
+                        <input
+                            id="email"
+                            className="text-input"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="mage@ravnica.com"
+                            required
+                        />
+                    </div>
 
-                    <label htmlFor="password" style={styles.label}>Password</label>
-                    <div style={styles.passwordContainer}>
+                    <div className="form-group">
+                        <label htmlFor="password" className="field-label">Password</label>
                         <input
                             id="password"
-                            style={{ ...styles.input, width: "100%", boxSizing: "border-box" }}
+                            className="text-input"
                             type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -111,11 +114,11 @@ function SignupPage() {
                         />
                     </div>
 
-                    <label htmlFor="confirmPassword" style={styles.label}>Confirm Password</label>
-                    <div style={styles.passwordContainer}>
+                    <div className="form-group">
+                        <label htmlFor="confirmPassword" className="field-label">Confirm Password</label>
                         <input
                             id="confirmPassword"
-                            style={{ ...styles.input, width: "100%", boxSizing: "border-box" }}
+                            className="text-input"
                             type={showPassword ? "text" : "password"}
                             value={confirm}
                             onChange={(e) => setConfirm(e.target.value)}
@@ -124,33 +127,24 @@ function SignupPage() {
                         />
                     </div>
 
-                    {/* Tiny toggle for password visibility */}
-                    <div style={styles.toggleContainer}>
-                        <label style={styles.toggleLabel}>
+                    <div className="checkbox-row">
+                        <label className="checkbox-label">
                             <input
                                 type="checkbox"
                                 onChange={() => setShowPassword(!showPassword)}
-                                style={{ marginRight: '5px' }}
                             />
                             Show Passwords
                         </label>
                     </div>
 
-                    <button
-                        style={{
-                            ...styles.button,
-                            ...(submitting ? styles.buttonDisabled : {})
-                        }}
-                        type="submit"
-                        disabled={submitting}
-                    >
+                    <button className="primary-button" type="submit" disabled={submitting}>
                         {submitting ? "Summoning Account..." : "Create Account"}
                     </button>
                 </form>
 
-                <div style={styles.footer}>
+                <div className="footer-note">
                     Already have an account?{" "}
-                    <Link to="/login" style={styles.link}>
+                    <Link to="/login" className="text-link">
                         Login
                     </Link>
                 </div>
@@ -160,116 +154,3 @@ function SignupPage() {
 }
 
 export default SignupPage;
-
-// Styling
-const styles = {
-    page: {
-        minHeight: "100vh",
-        background: "radial-gradient(circle at top, #2c2c2c, #0f0f0f)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "Georgia, serif", // Classic MTG feel
-    },
-    card: {
-        width: "420px",
-        padding: "30px",
-        borderRadius: "14px",
-        background: "#1b1b1b",
-        boxShadow: "0 12px 40px rgba(0,0,0,0.7)",
-        border: "1px solid #444",
-        boxSizing: "border-box",
-    },
-    manaBar: {
-        height: "6px",
-        borderRadius: "6px",
-        marginBottom: "20px",
-        background:
-            "linear-gradient(90deg, #f8f6d8, #4c78d0, #1d7a3a, #8b2c2c, #222, #d7a73f)",
-    },
-    title: {
-        fontSize: "26px",
-        textAlign: "center",
-        marginBottom: "6px",
-        color: "#f5f5f5",
-        letterSpacing: "1px",
-    },
-    subtitle: {
-        textAlign: "center",
-        fontSize: "14px",
-        color: "#aaa",
-        marginBottom: "20px",
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-    },
-    label: {
-        marginTop: "12px",
-        fontSize: "13px",
-        color: "#bbb",
-    },
-    passwordContainer: {
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-    },
-    input: {
-        marginTop: "6px",
-        padding: "10px",
-        borderRadius: "8px",
-        border: "1px solid #444",
-        background: "#111",
-        color: "#eee",
-        fontFamily: "inherit",
-    },
-    toggleContainer: {
-        marginTop: "8px",
-        display: "flex",
-        justifyContent: "flex-end",
-    },
-    toggleLabel: {
-        fontSize: "12px",
-        color: "#aaa",
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-    },
-    button: {
-        marginTop: "20px",
-        padding: "12px",
-        borderRadius: "10px",
-        border: "none",
-        fontWeight: "bold",
-        fontSize: "16px",
-        background: "#d7a73f", // Gold/Mythic rare color
-        color: "#111",
-        cursor: "pointer",
-        transition: "background 0.2s",
-    },
-    buttonDisabled: {
-        background: "#7a6229",
-        color: "#888",
-        cursor: "not-allowed",
-    },
-    error: {
-        background: "#4a1f1f",
-        border: "1px solid #a33",
-        padding: "10px",
-        borderRadius: "8px",
-        marginBottom: "12px",
-        color: "#ffbaba",
-        fontSize: "14px",
-    },
-    footer: {
-        marginTop: "20px",
-        textAlign: "center",
-        color: "#aaa",
-        fontSize: "14px",
-    },
-    link: {
-        color: "#d7a73f",
-        textDecoration: "none",
-        fontWeight: "bold",
-    },
-};

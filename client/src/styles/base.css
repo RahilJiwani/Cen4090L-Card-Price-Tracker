@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    background: radial-gradient(circle at top, #2c2c2c, #0f0f0f);
+    color: #eee;
+    font-family: Georgia, serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    min-height: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}

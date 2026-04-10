@@ -12,11 +12,10 @@ import NotFoundPage from './Pages/NotFound.jsx'
 
 function App() {
     return (
-        <div style={styles.appShell}>
-            {}
+        <div className="app-shell">
             <Navbar />
 
-            <main style={styles.content}>
+            <main className="app-content">
                 <Routes>
                     {}
                     <Route path="/" element={<RootRedirect />} />
@@ -69,12 +68,3 @@ function App() {
 }
 
 export default App
-
-const styles = {
-    appShell: {
-        minHeight: '100vh',
-    },
-    content: {
-        paddingTop: '72px',
-    },
-}

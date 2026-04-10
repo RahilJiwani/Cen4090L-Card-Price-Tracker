@@ -1,0 +1,99 @@
+.app-shell {
+    min-height: 100vh;
+}
+
+.app-content {
+    padding-top: 72px;
+}
+
+.page-shell {
+    min-height: calc(100vh - 72px);
+    padding: 20px;
+}
+
+.page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.surface-card,
+.auth-card,
+.page-card,
+.dashboard-panel,
+.search-panel,
+.verification-card,
+.account-card,
+.result-card,
+.empty-state,
+.danger-zone {
+    background: #1b1b1b;
+    border: 1px solid #444;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+}
+
+.auth-header,
+.section-header,
+.page-header {
+    text-align: center;
+}
+
+.auth-title,
+.page-title,
+.section-title {
+    margin: 0;
+    color: #f5f5f5;
+    letter-spacing: 1px;
+    font-family: Georgia, serif;
+}
+
+.auth-title,
+.page-title {
+    font-size: 26px;
+}
+
+.section-title {
+    font-size: 1.5rem;
+}
+
+.auth-subtitle,
+.page-subtitle,
+.section-subtitle,
+.muted-text {
+    color: #aaa;
+}
+
+.auth-subtitle,
+.page-subtitle {
+    font-size: 14px;
+    margin: 6px 0 0;
+}
+
+.accent-bar,
+.mana-bar {
+    height: 6px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #f8f6d8, #4c78d0, #1d7a3a, #8b2c2c, #222, #d7a73f);
+}
+
+.dashboard-stack,
+.search-stack,
+.account-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-list,
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.page-header,
+.section-header {
+    margin-bottom: 20px;
+}

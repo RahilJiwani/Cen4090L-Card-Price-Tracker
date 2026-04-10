@@ -11,14 +11,23 @@ export default function SignupVerification() {
     return () => clearInterval(intervalId);
     }, []);
 
-    return <>
-        <h1>Signup Verification</h1>
-        <p>Please check your email for a verification link.</p>
-        {time <= 0 ? (
-            <p>Your verification email has expired.</p>
-        ) : (
-            <p>Your verification email will expire in {time} seconds.</p>
-        )}
-        <button onClick={() => time <= 0 && setTime(startTime)}>Resend Verification Email</button>
-    </>
+    return (
+        <div className="auth-shell">
+            <div className="verification-card">
+                <div className="accent-bar" />
+                <h1 className="auth-title">Signup Verification</h1>
+                <p className="verification-copy">Please check your email for a verification link.</p>
+                {time <= 0 ? (
+                    <p className="verification-copy">Your verification email has expired.</p>
+                ) : (
+                    <p className="verification-copy">Your verification email will expire in {time} seconds.</p>
+                )}
+                <div className="verification-actions">
+                    <button className="primary-button" onClick={() => time <= 0 && setTime(startTime)}>
+                        Resend Verification Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
 }
