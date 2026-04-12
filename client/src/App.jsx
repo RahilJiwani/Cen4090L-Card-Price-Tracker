@@ -8,6 +8,7 @@ import LoginPage from './Pages/Login.jsx'
 import DashboardPage from './Pages/Dashboard.jsx'
 import SearchPage from './Pages/Search.jsx'
 import AccountPage from './Pages/Account.jsx'
+import CardDetailPage from './Pages/CardDetail.jsx'
 import NotFoundPage from './Pages/NotFound.jsx'
 
 function App() {
@@ -59,6 +60,10 @@ function App() {
                         element={
                                 <AccountPage />
                         }
+                    />
+                    <Route
+                        path="/card/:cardId"
+                        element={<CardDetailPage />}
                     />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
