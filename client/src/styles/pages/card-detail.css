@@ -1,0 +1,438 @@
+/*
+ * Card Detail Page Styles - Dark Theme
+ */
+
+.card-detail {
+  padding: 30px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Main Container */
+.card-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+  background: #1e1c1a;
+  border: 1px solid #444;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* Card Images Section */
+.card-images-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.card-image-wrapper {
+  position: relative;
+  max-width: 300px;
+  width: 100%;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border: 1px solid #555;
+  display: block;
+}
+
+.flip-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #d7a73f;
+  border: 1px solid #d7a73f;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.flip-button:hover {
+  background: rgba(215, 167, 63, 0.1);
+}
+
+/* Card Details Section */
+.card-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Header */
+.card-header {
+  border-bottom: 2px solid #3d3a37;
+  padding-bottom: 20px;
+}
+
+.card-name {
+  font-size: 32px;
+  font-weight: bold;
+  color: #eee;
+  margin: 0 0 10px 0;
+}
+
+.card-set-info {
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.set-code {
+  font-weight: bold;
+  color: #d7a73f;
+  text-transform: uppercase;
+}
+
+.collector-number {
+  color: #777;
+}
+
+/* Attributes */
+.card-attributes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.attribute {
+  display: flex;
+  flex-direction: column;
+}
+
+.attribute label {
+  font-weight: bold;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.attribute p {
+  margin: 0;
+  font-size: 16px;
+  color: #eee;
+}
+
+/* Rarity */
+.rarity {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+  border: 1px solid transparent;
+}
+
+.rarity-common {
+  background: #3a3a3a;
+  color: #bbb;
+  border-color: #555;
+}
+
+.rarity-uncommon {
+  background: #4a4a4a;
+  color: #ddd;
+  border-color: #666;
+}
+
+.rarity-rare {
+  background: #5a5a1a;
+  color: #d7a73f;
+  border-color: #7a7a2a;
+}
+
+.rarity-mythic {
+  background: #5a2a1a;
+  color: #f4a460;
+  border-color: #7a3a2a;
+}
+
+/* Colors */
+.colors {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.color-list {
+  margin: 0;
+  color: #d7a73f;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.color-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 12px;
+  color: white;
+  border: 2px solid #555;
+}
+
+.color-white {
+  background: #c0c0c0;
+  color: #000;
+  border-color: #aaa;
+}
+
+.color-blue {
+  background: #2196F3;
+}
+
+.color-black {
+  background: #1a1a1a;
+  border-color: #333;
+}
+
+.color-red {
+  background: #f44336;
+}
+
+.color-green {
+  background: #4caf50;
+}
+
+.color-colorless {
+  background: #808080;
+  color: #000;
+  border-color: #666;
+}
+
+.artist {
+  font-style: italic;
+  color: #aaa;
+}
+
+/* Description */
+.card-description {
+  background: #252423;
+  padding: 16px;
+  border-radius: 6px;
+  border-left: 4px solid #d7a73f;
+}
+
+.card-description label {
+  font-weight: bold;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+.card-description p {
+  margin: 0;
+  color: #ddd;
+  line-height: 1.5;
+}
+
+/* Pricing Section */
+.pricing-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: #252423;
+  border: 1px solid #3d3a37;
+  border-radius: 6px;
+}
+
+.current-price {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-price .label {
+  font-weight: bold;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.current-price .price {
+  font-size: 28px;
+  font-weight: bold;
+  color: #d7a73f;
+}
+
+.price-change-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: #1e1c1a;
+  border: 2px solid transparent;
+}
+
+.price-change-indicator.positive {
+  color: #4caf50;
+  border-color: #4caf50;
+}
+
+.price-change-indicator.negative {
+  color: #f44336;
+  border-color: #f44336;
+}
+
+.price-change-indicator .arrow {
+  font-size: 20px;
+}
+
+.price-change-indicator .percent {
+  font-size: 16px;
+}
+
+/* Price History Section */
+.price-history-section {
+  background: #1e1c1a;
+  border: 1px solid #444;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.price-history-section h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #eee;
+  font-size: 24px;
+}
+
+/* Graph Styles */
+.price-history-graph-wrapper {
+  position: relative;
+  background: #252423;
+  border: 1px solid #3d3a37;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 16px;
+  cursor: grab;
+  overscroll-behavior: contain;
+}
+
+.graph-help-text {
+  padding: 12px 0;
+  color: #888;
+  font-size: 12px;
+  margin: 12px 0 0 0;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .card-detail-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .card-name {
+    font-size: 28px;
+  }
+
+  .card-attributes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-detail {
+    padding: 20px 15px;
+  }
+
+  .card-detail-container {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .card-images-section {
+    padding: 0;
+  }
+
+  .card-name {
+    font-size: 24px;
+  }
+
+  .card-attributes {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .pricing-section {
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .price-history-section {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-detail {
+    padding: 15px 10px;
+  }
+
+  .card-detail-container {
+    padding: 15px;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .card-name {
+    font-size: 20px;
+  }
+
+  .card-set-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .card-attributes {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pricing-section {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .price-history-section {
+    padding: 15px;
+  }
+
+  .price-history-section h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+}
+

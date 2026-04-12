@@ -5,10 +5,12 @@
 @import "./components/buttons.css";
 @import "./components/feedback.css";
 @import "./components/navbar.css";
+@import "./components/cards.css";
 
 @import "./pages/auth.css";
 @import "./pages/dashboard.css";
 @import "./pages/account.css";
 @import "./pages/search.css";
+@import "./pages/card-detail.css";
 
 @import "./responsive.css";
