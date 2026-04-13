@@ -28,7 +28,7 @@ def install_nodeDeps():
     client_dir = root_dir / "client"
     print(client_dir)
     npm_cmd = resolve_npm_command()
-    subprocess.run([npm_cmd, "install", "--legacy-peer-deps"], cwd=client_dir)
+    subprocess.run([npm_cmd, "install", "--force"], cwd=client_dir)
 
 if __name__ == "__main__":
     print("Checking for dependencies...")
