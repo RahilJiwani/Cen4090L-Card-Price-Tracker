@@ -39,41 +39,47 @@ function LoginPage() {
     }
 
     return (
-        <div style={styles.page}>
-            <div style={styles.card}>
-                <div style={styles.manaBar} />
+        <div className="auth-shell">
+            <div className="auth-card">
+                <div className="accent-bar" />
 
-                <h1 style={styles.title}>MTG Price Tracker</h1>
-                <p style={styles.subtitle}>Welcome back, Planeswalker.</p>
+                <h1 className="auth-title">MTG Price Tracker</h1>
+                <p className="auth-subtitle">Welcome back, Planeswalker.</p>
 
-                {error && <div style={styles.error}>{error}</div>}
+                {error && <div className="error-banner">{error}</div>}
 
-                <form onSubmit={handleSubmit} style={styles.form}>
-                    <label style={styles.label}>Username</label>
-                    <input
-                        style={styles.input}
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Planeswalker"
-                    />
+                <form onSubmit={handleSubmit} className="auth-form">
+                    <div className="form-group">
+                        <label htmlFor="username" className="field-label">Username</label>
+                        <input
+                            id="username"
+                            className="text-input"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Planeswalker"
+                        />
+                    </div>
 
-                    <label style={styles.label}>Password</label>
-                    <input
-                        style={styles.input}
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Password"
-                    />
+                    <div className="form-group">
+                        <label htmlFor="password" className="field-label">Password</label>
+                        <input
+                            id="password"
+                            className="text-input"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                        />
+                    </div>
 
-                    <button style={styles.button} type="submit" disabled={submitting}>
+                    <button className="primary-button" type="submit" disabled={submitting}>
                         {submitting ? "Authenticating..." : "Login"}
                     </button>
                 </form>
 
-                <div style={styles.footer}>
+                <div className="footer-note">
                     Don't have an account?{" "}
-                    <Link to="/signup" style={styles.link}>
+                    <Link to="/signup" className="text-link">
                         Create one
                     </Link>
                 </div>
@@ -83,56 +89,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
-const styles = {
-    page: {
-        padding: "20px",
-        fontFamily: "sans-serif",
-    },
-    card: {
-        maxWidth: "300px",
-        margin: "0 auto",
-        padding: "20px",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-    },
-    title: {
-        fontSize: "1.5rem",
-        marginBottom: "1rem",
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-    },
-    label: {
-        fontWeight: "bold",
-    },
-    input: {
-        padding: "8px",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-    },
-    button: {
-        padding: "10px",
-        marginTop: "10px",
-        cursor: "pointer",
-    },
-    error: {
-        color: "red",
-        marginBottom: "10px",
-    },
-    footer: {
-        marginTop: "20px",
-        fontSize: "0.9rem",
-    },
-    separator: {
-        display: "none",
-    },
-    subtitle: {
-        display: "none",
-    },
-    manaBar: {
-        display: "none",
-    }
-};

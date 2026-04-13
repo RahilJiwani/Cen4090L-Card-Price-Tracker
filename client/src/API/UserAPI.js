@@ -74,3 +74,42 @@ export async function getCurrentUser() {
 
     return res.json();
 }
+export async function getWatchlist() {
+    const res = await fetch("/api/dashboard/watchlist", {
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Failed to fetch watchlist (${res.status})`);
+    }
+
+    return res.json();
+}
+
+export async function addToWatchlist(cardId) {
+    const res = await fetch("/api/dashboard/watchlist", {
+        method: "POST",
+        headers: JSON_HEADERS,
+        credentials: "include",
+        body: JSON.stringify({ card_id: cardId }),
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Failed to add card (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function removeFromWatchlist(cardId) {
+    const res = await fetch(`/api/dashboard/watchlist/${cardId}`, {
+        method: "DELETE",
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Failed to remove card (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}

@@ -1,34 +1,42 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../Hooks/useAuth.js';
 
 function Navbar() {
-    const { isLoggedIn, logout } = useAuth();
+    // changed isLoggedIn to user to match auth hook
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        if (logout) {
+            await logout();
+        }
+        navigate('/login', { replace: true });
+    };
 
     return (
-        <nav style={styles.nav}>
-            <div style={styles.brand}>
-                {/* Clicking the logo takes you home */}
-                <Link to="/" style={styles.brandLink}>
+        <nav className="site-nav">
+            <div className="site-brand">
+                <span className="site-brand__eyebrow">Card price tracking</span>
+                <Link to="/" className="site-brand__link">
                     MTG Price Tracker
                 </Link>
             </div>
 
-            <div style={styles.navLinks}>
-                {isLoggedIn ? (
+            <div className="site-nav-links">
+                {user ? (
                     <>
-                        <Link to="/dashboard" style={styles.link}>Dashboard</Link>
-                        <Link to="/search" style={styles.link}>Search Cards</Link>
-                        <Link to="/account" style={styles.link}>Account</Link>
-                        {/* Assuming your useAuth hook has a logout function! */}
-                        <button onClick={logout} style={styles.logoutButton}>
+                        <Link to="/dashboard" className="site-nav-link">Dashboard</Link>
+                        <Link to="/search" className="site-nav-link">Search Cards</Link>
+                        <Link to="/account" className="site-nav-link">Account</Link>
+                        <button onClick={handleLogout} className="nav-button">
                             Log Out
                         </button>
                     </>
                 ) : (
                     <>
-                        <Link to="/login" style={styles.link}>Login</Link>
-                        <Link to="/signup" style={styles.signupButton}>
+                        <Link to="/login" className="site-nav-link">Login</Link>
+                        <Link to="/signup" className="nav-button nav-button--primary">
                             Sign Up
                         </Link>
                     </>
@@ -39,62 +47,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-// Styling
-const styles = {
-    nav: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "15px 40px",
-        background: "#1b1b1b",
-        borderBottom: "2px solid #d7a73f", // MTG Gold accent line
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        boxSizing: "border-box",
-        zIndex: 1000,
-        fontFamily: "Georgia, serif",
-    },
-    brand: {
-        fontSize: "22px",
-        fontWeight: "bold",
-        letterSpacing: "1px",
-    },
-    brandLink: {
-        color: "#f5f5f5",
-        textDecoration: "none",
-    },
-    navLinks: {
-        display: "flex",
-        gap: "24px",
-        alignItems: "center",
-    },
-    link: {
-        color: "#bbb",
-        textDecoration: "none",
-        fontSize: "15px",
-        transition: "color 0.2s",
-    },
-    signupButton: {
-        background: "#d7a73f",
-        color: "#111",
-        padding: "8px 16px",
-        borderRadius: "6px",
-        textDecoration: "none",
-        fontWeight: "bold",
-        fontSize: "14px",
-    },
-    logoutButton: {
-        background: "transparent",
-        border: "1px solid #d7a73f",
-        color: "#d7a73f",
-        padding: "8px 16px",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        fontFamily: "inherit",
-        fontSize: "14px",
-    }
-};

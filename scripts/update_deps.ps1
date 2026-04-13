@@ -63,7 +63,7 @@ if (Test-Path "$clientPath\package.json") {
     
     # Use 'npm-check-updates' utility through npx which rewrites package.json with latest secure versions
     Write-Host "Scanning client/package.json for newest versions..." -ForegroundColor Cyan
-    npx -y npm-check-updates -u
+    npx.cmd -y npm-check-updates -u
     
     Write-Host "`nInstalling updated npm packages..." -ForegroundColor Cyan
     npm install --legacy-peer-deps

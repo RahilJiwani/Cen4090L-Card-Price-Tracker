@@ -8,19 +8,19 @@ import LoginPage from './Pages/Login.jsx'
 import DashboardPage from './Pages/Dashboard.jsx'
 import SearchPage from './Pages/Search.jsx'
 import AccountPage from './Pages/Account.jsx'
+import CardDetailPage from './Pages/CardDetail.jsx'
 import NotFoundPage from './Pages/NotFound.jsx'
 
 function App() {
     return (
-        <div style={styles.appShell}>
-            {}
+        <div className="app-shell">
             <Navbar />
 
-            <main style={styles.content}>
+            <main className="app-content">
                 <Routes>
                     {}
                     <Route path="/" element={<RootRedirect />} />
-
+                    // will add back protected routes after testing 
                     <Route
                         path="/signup"
                         element={
@@ -48,26 +48,22 @@ function App() {
                     <Route
                         path="/dashboard"
                         element={
-                            <ProtectedRoute>
                                 <DashboardPage />
-                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/search"
-                        element={
-                            <ProtectedRoute>
-                                <SearchPage />
-                            </ProtectedRoute>
-                        }
+                        element={<SearchPage />}
                     />
                     <Route
                         path="/account"
                         element={
-                            <ProtectedRoute>
                                 <AccountPage />
-                            </ProtectedRoute>
                         }
+                    />
+                    <Route
+                        path="/card/:cardId"
+                        element={<CardDetailPage />}
                     />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
@@ -77,12 +73,3 @@ function App() {
 }
 
 export default App
-
-const styles = {
-    appShell: {
-        minHeight: '100vh',
-    },
-    content: {
-        paddingTop: '72px',
-    },
-}

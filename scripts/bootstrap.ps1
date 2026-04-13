@@ -45,24 +45,6 @@ if (!(Test-Path "$venvPath")) {
     py -m venv "$venvPath"
 }
 
-# enter venv
-Write-Host "Activating venv..." -ForegroundColor Yellow
-. "$venvPath\Scripts\Activate.ps1"
-
-# install python dependencies
-Write-Host "Installing Python dependencies..." -ForegroundColor Yellow
-py -m pip install --upgrade pip
-py -m pip install -r "$ProjectRoot\requirements.txt"
-
-# install npm dependencies
-$clientPath = "$ProjectRoot\client"
-if (Test-Path "$clientPath\package.json") {
-    Write-Host "Installing client dependencies..." -ForegroundColor Yellow
-    Push-Location $clientPath
-    npm install --legacy-peer-deps
-    Pop-Location
-}
-
 # Create .env if missing
 if (!(Test-Path $envFile)) {
     $DatabaseUrl = Read-Host "Enter Neon PostgreSQL Connection String or leave blank to enter later"
