@@ -21,7 +21,7 @@ def check_for_dep(dep: str) -> bool:
         return False
 
 def install_pyDeps():
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip", "install", "-r", "requirements.txt"], cwd=Path(__file__).resolve().parent.parent)
 
 def install_nodeDeps():
     root_dir = Path(__file__).resolve().parent.parent
