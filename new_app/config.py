@@ -15,8 +15,14 @@ else:
     print("Environment file not found. Please create a .env file in the new_app directory with the necessary configuration.")
     print("Using system environment variables.")
 
-
 class Config:
     SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-fallback')
     SQLALCHEMY_DATABASE_URI = config('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False # should be moved to .env for security.
+#    # Email settings
+MAIL_SERVER = config('MAIL_SERVER')
+MAIL_PORT = config('MAIL_PORT', cast=int)
+MAIL_USE_TLS = True
+MAIL_USERNAME = config('MAIL_USERNAME')
+MAIL_PASSWORD = config('MAIL_PASSWORD')
+MAIL_DEFAULT_SENDER = config('MAIL_FROM')
