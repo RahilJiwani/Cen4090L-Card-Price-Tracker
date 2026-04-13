@@ -24,8 +24,9 @@ def install_pyDeps():
     subprocess.run(["pip", "install", "-r", "requirements.txt"])
 
 def install_nodeDeps():
-    root_dir = Path(__file__).resolve().parent
+    root_dir = Path(__file__).resolve().parent.parent
     client_dir = root_dir / "client"
+    print(client_dir)
     npm_cmd = resolve_npm_command()
     subprocess.run([npm_cmd, "install", "--legacy-peer-deps"], cwd=client_dir)
 
