@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function SearchPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -8,50 +8,45 @@ function SearchPage() {
     const [error, setError] = useState(null);
     const [watchlist, setWatchlist] = useState(new Set());
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        // allow searching by just filter, or require some query
-        if (!searchQuery.trim() && filterType === "All") return;
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const fetchCards = async () => {
+                if (!searchQuery.trim() && filterType === "All") {
+                    setResults([]);
+                    return;
+                }
 
-        setIsSearching(true);
-        setError(null);
+                setIsSearching(true);
+                setError(null);
 
-        // mock api call for testing
-        setTimeout(() => {
-            if (searchQuery.toLowerCase() === "error") {
-                setError("The magical leyline was disrupted. Please try again.");
-                setResults([]);
-                setIsSearching(false);
-                return;
-            }
+                try {
+                    const queryParams = new URLSearchParams();
+                    queryParams.append('q', searchQuery || 'format:standard');
+                    if (filterType !== "All") {
+                        queryParams.append('type', filterType);
+                    }
+                    
+                    const response = await fetch(`/api/search/?${queryParams.toString()}`);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    
+                    const data = await response.json();
+                    setResults(data.cards || []);
+                } catch (err) {
+                    console.error("Error fetching cards:", err);
+                    setError("The magical leyline was disrupted. Please try again.");
+                    setResults([]);
+                } finally {
+                    setIsSearching(false);
+                }
+            };
 
-            // mock database to test the filters
-            const mockDatabase = [
-                { id: 1, name: "Black Lotus", set: "Limited Edition Alpha", type: "Artifact", manaCost: "{0}", price: "$30,000.00", imageUrl: "https://via.placeholder.com/146x204/2c241b/d4af37?text=Black+Lotus" },
-                { id: 2, name: "Mox Sapphire", set: "Limited Edition Beta", type: "Artifact", manaCost: "{0}", price: "$6,500.00", imageUrl: "https://via.placeholder.com/146x204/1a5b8c/d4af37?text=Mox+Sapphire" },
-                { id: 3, name: "Tarmogoyf", set: "Future Sight", type: "Creature — Lhurgoyf", manaCost: "{1}{G}", price: "$15.50", imageUrl: "https://via.placeholder.com/146x204/2e6b3b/d4af37?text=Tarmogoyf" },
-                { id: 4, name: "Lightning Bolt", set: "Limited Edition Alpha", type: "Instant", manaCost: "{R}", price: "$2.50", imageUrl: "https://via.placeholder.com/146x204/c23b22/d4af37?text=Lightning+Bolt" },
-                { id: 5, name: "Birds of Paradise", set: "Limited Edition Alpha", type: "Creature — Bird", manaCost: "{G}", price: "$12.00", imageUrl: "https://via.placeholder.com/146x204/2e6b3b/d4af37?text=Birds" },
-                { id: 6, name: "Wrath of God", set: "Limited Edition Alpha", type: "Sorcery", manaCost: "{2}{W}{W}", price: "$14.00", imageUrl: "https://via.placeholder.com/146x204/f4eedd/2c241b?text=Wrath+of+God" }
-            ];
+            fetchCards();
+        }, 250); // 250ms debounce
 
-            let filteredCards = mockDatabase;
-            if (searchQuery.trim()) {
-                filteredCards = filteredCards.filter(card =>
-                    card.name.toLowerCase().includes(searchQuery.toLowerCase())
-                );
-            }
-
-            if (filterType !== "All") {
-                filteredCards = filteredCards.filter(card =>
-                    card.type.includes(filterType)
-                );
-            }
-
-            setResults(filteredCards);
-            setIsSearching(false);
-        }, 800);
-    };
+        return () => clearTimeout(timer);
+    }, [searchQuery, filterType]);
 
     const toggleWatchlist = (cardId) => {
         setWatchlist((prev) => {
@@ -70,7 +65,7 @@ function SearchPage() {
             <div className="search-legacy-container">
                 <h1 className="search-legacy-title">Grimoire Search</h1>
 
-                <form onSubmit={handleSearch} className="search-legacy-search-form">
+                <div className="search-legacy-search-form">
                     <input
                         className="search-legacy-search-input"
                         type="text"
@@ -92,11 +87,7 @@ function SearchPage() {
                         <option value="Planeswalker">Planeswalker</option>
                         <option value="Land">Land</option>
                     </select>
-
-                    <button type="submit" className="search-legacy-button" disabled={isSearching}>
-                        {isSearching ? "Scrying..." : "Search"}
-                    </button>
-                </form>
+                </div>
 
                 {error && (
                     <div className="search-legacy-error-banner">
