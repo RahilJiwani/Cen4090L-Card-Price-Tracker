@@ -135,24 +135,24 @@ const PriceHistoryGraph = ({ priceData, cardName }) => {
       style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
     >
       <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={visibleData} margin={{ top: 10, right: 30, bottom: 30, left: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#3d3a37" />
-            <XAxis dataKey="label" tick={{ fill: '#aaa', fontSize: 12 }} axisLine={{ stroke: '#555' }} tickLine={{ stroke: '#555' }} />
-            <YAxis
-              tick={{ fill: '#aaa', fontSize: 12 }}
-              axisLine={{ stroke: '#555' }}
-              tickLine={{ stroke: '#555' }}
-              tickFormatter={formatPrice}
-            />
-            <Tooltip
-              formatter={(value) => formatPrice(value)}
-              contentStyle={{ backgroundColor: '#f8f8f8', border: '1px solid #ccc', borderRadius: 4 }}
-              labelStyle={{ color: '#222' }}
-            />
-            <Legend wrapperStyle={{ color: '#aaa' }} />
-            <Line type="monotone" dataKey="price" name={`${cardName} Price`} stroke="#d7a73f" strokeWidth={2} dot={{ r: 3 }} />
-          </LineChart>
-        </ResponsiveContainer>
+        <LineChart data={visibleData} margin={{ top: 10, right: 30, bottom: 30, left: 30 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#3d3a37" />
+          <XAxis dataKey="label" tick={{ fill: '#aaa', fontSize: 12 }} axisLine={{ stroke: '#555' }} tickLine={{ stroke: '#555' }} />
+          <YAxis
+            tick={{ fill: '#aaa', fontSize: 12 }}
+            axisLine={{ stroke: '#555' }}
+            tickLine={{ stroke: '#555' }}
+            tickFormatter={formatPrice}
+          />
+          <Tooltip
+            formatter={(value) => formatPrice(value)}
+            contentStyle={{ backgroundColor: '#f8f8f8', border: '1px solid #ccc', borderRadius: 4 }}
+            labelStyle={{ color: '#222' }}
+          />
+          <Legend wrapperStyle={{ color: '#aaa' }} />
+          <Line type="monotone" dataKey="price" name={`${cardName} Price`} stroke="#d7a73f" strokeWidth={2} dot={{ r: 3 }} />
+        </LineChart>
+      </ResponsiveContainer>
       <p className="graph-help-text">Drag to pan • Scroll wheel to zoom • Hover to see prices</p>
     </div>
   );

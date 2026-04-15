@@ -13,7 +13,9 @@ async function parseErrorResponse(res, fallbackMessage) { // managed here to dec
         }
     }
 
-    throw new Error(message);
+    const err = new Error(message);
+    err.status = res.status;
+    throw err;
 }
 
 export async function loginUser({ username, password }) {
@@ -41,6 +43,32 @@ export async function signupUser({ username, email, password }) {
 
     if (!res.ok) {
         await parseErrorResponse(res, `Signup failed (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function verifyEmail({ token }) {
+    const res = await fetch(`/api/auth/verify-email?token=${token}`, {
+        method: "POST",
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Email verification failed (${res.status})`);
+    }
+
+    return res.json().catch(() => ({}));
+}
+
+export async function resendVerificationEmail() {
+    const res = await fetch("/api/auth/verify-email", {
+        method: "GET",
+        credentials: "include",
+    });
+
+    if (!res.ok) {
+        await parseErrorResponse(res, `Resend verification email failed (${res.status})`);
     }
 
     return res.json().catch(() => ({}));

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { getCurrentUser, logoutUser, loginUser, signupUser } from "../API/UserAPI.js";
+import { getCurrentUser, logoutUser, loginUser, signupUser, verifyEmail as verifyEmailAPI, resendVerificationEmail as resendVerificationEmailAPI } from "../API/UserAPI.js";
 
 const AuthContext = createContext(null);
 
@@ -37,6 +37,17 @@ export function AuthProvider({ children }) {
         await refreshAuth();
     }, [refreshAuth]);
 
+    const verifyEmail = useCallback(async (token) => {
+        await verifyEmailAPI({ token });
+        await refreshAuth();
+    }, [refreshAuth]);
+
+    const resendVerificationEmail = useCallback(async () => {
+        await resendVerificationEmailAPI();
+        await refreshAuth();
+    }, [refreshAuth]);
+
+
     useEffect(() => {
         refreshAuth();
     }, [refreshAuth]);
@@ -45,10 +56,13 @@ export function AuthProvider({ children }) {
         user,
         isLoggedIn: Boolean(user),
         authChecked,
+        refreshAuth,
         login,
         signup,
         logout,
-    }), [user, authChecked, refreshAuth, login, signup, logout]);
+        verifyEmail,
+        resendVerificationEmail
+    }), [user, authChecked, refreshAuth, login, signup, logout, verifyEmail, resendVerificationEmail]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

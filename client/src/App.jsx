@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
-import { ProtectedRoute, PublicOnlyRoute } from './Components/RouteGuards.jsx'
+import { ProtectedRoute, PublicOnlyRoute, UnverifiedOnlyRoute } from './Components/RouteGuards.jsx'
 import RootRedirect from './Components/RootRedirect.jsx' 
 import Navbar from './Components/Navbar.jsx' 
 import SignupPage from './Pages/Signup.jsx'
 import SignupVerification from './Pages/SignupVerification.jsx'
+import Verify from './Pages/Verify.jsx'
 import LoginPage from './Pages/Login.jsx'
 import DashboardPage from './Pages/Dashboard.jsx'
 import SearchPage from './Pages/Search.jsx'
@@ -18,9 +19,8 @@ function App() {
 
             <main className="app-content">
                 <Routes>
-                    {}
                     <Route path="/" element={<RootRedirect />} />
-                    // will add back protected routes after testing 
+                    {/* will add back protected routes after testing  */}
                     <Route
                         path="/signup"
                         element={
@@ -40,30 +40,50 @@ function App() {
                     <Route
                         path="/signup-verification"
                         element={
-                            <PublicOnlyRoute>
+                            <UnverifiedOnlyRoute>
                                 <SignupVerification />
-                            </PublicOnlyRoute>
+                            </UnverifiedOnlyRoute>
+                        }
+                    />
+                    <Route
+                        path="/verify"
+                        element={
+                            <UnverifiedOnlyRoute>
+                                <Verify />
+                            </UnverifiedOnlyRoute>
                         }
                     />
                     <Route
                         path="/dashboard"
                         element={
+                            <ProtectedRoute>
                                 <DashboardPage />
+                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/search"
-                        element={<SearchPage />}
+                        element={
+                            <ProtectedRoute>
+                                <SearchPage />
+                            </ProtectedRoute>
+                        }
                     />
                     <Route
                         path="/account"
                         element={
+                            <ProtectedRoute>
                                 <AccountPage />
+                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/card/:cardId"
-                        element={<CardDetailPage />}
+                        element={
+                            <ProtectedRoute>
+                                <CardDetailPage />
+                            </ProtectedRoute>
+                        }
                     />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>

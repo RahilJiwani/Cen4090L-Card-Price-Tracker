@@ -1,4 +1,4 @@
-from flask import request, session
+from flask import request, session, render_template
 from flask_restx import Namespace, Resource
 from ..models import User
 import secrets
@@ -7,6 +7,17 @@ from ..exts import db, mail
 
 api = Namespace('auth', description='Authentication related operations')
 
+def send_verification_email(user):
+    # Send magic link email
+    verify_url = f"http://localhost:5173/verify?token={user.verification_token}"
+    html_body = render_template("verify_email.html", verify_url=verify_url)
+    
+    msg = Message(
+        subject="Verify your email",
+        recipients=[user.email],
+        html=html_body
+    )
+    mail.send(msg)
 
 # Update signup to generate and send magic link
 @api.route('/signup')
@@ -33,21 +44,15 @@ class Signup(Resource):
             new_user.set_password(password)
             new_user.is_verified = False
 
-            # Generate magic link token
             token = secrets.token_urlsafe(32)
             new_user.verification_token = token
             
             db.session.add(new_user)
             db.session.commit()
 
-            # Send magic link email
-            verify_url = f"http://localhost:5173/verify?token={token}"
-            msg = Message(
-                subject="Verify your email",
-                recipients=[email],
-                body=f"Click this link to verify your account: {verify_url}"
-            )
-            mail.send(msg)
+            session['user_id'] = new_user.id
+
+            send_verification_email(new_user)
 
             return {"message": "User created successfully, check your email"}, 201
         except Exception as e:
@@ -59,6 +64,15 @@ class Signup(Resource):
 @api.route('/verify-email')
 class VerifyEmail(Resource):
     def get(self):
+        user_id = session.get('user_id')
+        if not user_id:
+            return {"error": "Unauthorized"}, 401
+        user = User.query.get(user_id)
+        if user.is_verified:
+            return {"message": "User already verified"}, 400
+        send_verification_email(user)
+        return {"message": "Verification email resent"}, 200
+    def post(self):
         token = request.args.get('token')
         
         if not token:
@@ -128,5 +142,6 @@ class Me(Resource):
         return {
             "id": user.id,
             "username": user.username,
-            "email": user.email
+            "email": user.email,
+            "is_verified": user.is_verified
         }, 200

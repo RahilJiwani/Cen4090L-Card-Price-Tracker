@@ -55,7 +55,7 @@ function SignupPage() {
                 password,
             });
 
-            navigate("/SignupVerification");
+            navigate("/signup-verification");
         } catch (err) {
             setError(err.message || "Summoning failed. The spell fizzled.");
         } finally {
