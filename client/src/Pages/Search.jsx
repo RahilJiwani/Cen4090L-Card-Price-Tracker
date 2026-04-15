@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
+
+import { searchCards } from '../API/CardAPI';
 
 function SearchPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -20,18 +23,7 @@ function SearchPage() {
                 setError(null);
 
                 try {
-                    const queryParams = new URLSearchParams();
-                    queryParams.append('q', searchQuery || 'format:standard');
-                    if (filterType !== "All") {
-                        queryParams.append('type', filterType);
-                    }
-                    
-                    const response = await fetch(`/api/search/?${queryParams.toString()}`);
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    
-                    const data = await response.json();
+                    const data = await searchCards({ searchQuery, filterType });
                     setResults(data.cards || []);
                 } catch (err) {
                     console.error("Error fetching cards:", err);
@@ -102,22 +94,24 @@ function SearchPage() {
                         results.map((card) => {
                             const isWatched = watchlist.has(card.id);
                             return (
-                                <div key={card.id} className="search-legacy-card">
-                                    <div className="search-legacy-card-content">
-                                        <img
-                                            src={card.imageUrl}
-                                            alt={card.name}
-                                            className="search-legacy-card-image"
-                                        />
-                                        <div className="search-legacy-card-details">
-                                            <div className="search-legacy-card-header">
-                                                <h3 className="search-legacy-card-name">{card.name}</h3>
-                                                <span className="search-legacy-mana-cost">{card.manaCost}</span>
+                                <div key={`${card.id}-${card.scryfallId}`} className="search-legacy-card">
+                                    <Link to={`/card/${card.id}`} className="search-legacy-card-link">
+                                        <div className="search-legacy-card-content">
+                                            <img
+                                                src={card.imageUrl}
+                                                alt={card.name}
+                                                className="search-legacy-card-image"
+                                            />
+                                            <div className="search-legacy-card-details">
+                                                <div className="search-legacy-card-header">
+                                                    <h3 className="search-legacy-card-name">{card.name}</h3>
+                                                    <span className="search-legacy-mana-cost">{card.manaCost}</span>
+                                                </div>
+                                                <p className="search-legacy-card-type">{card.type}</p>
+                                                <p className="search-legacy-card-set">{card.set}</p>
                                             </div>
-                                            <p className="search-legacy-card-type">{card.type}</p>
-                                            <p className="search-legacy-card-set">{card.set}</p>
                                         </div>
-                                    </div>
+                                    </Link>
                                     <div className="search-legacy-action-container">
                                         <span className="search-legacy-price">{card.price}</span>
                                         <button

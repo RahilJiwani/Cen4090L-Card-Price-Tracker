@@ -8,6 +8,21 @@
   margin: 0 auto;
 }
 
+.card-detail-status {
+  background: #1e1c1a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #eee;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.card-detail-status-error {
+  border-color: #a33;
+  color: #ffbaba;
+}
+
 /* Main Container */
 .card-detail-container {
   display: grid;
@@ -98,6 +113,10 @@
 
 .collector-number {
   color: #777;
+}
+
+.card-set-name {
+  color: #c7c0b3;
 }
 
 /* Attributes */
@@ -308,6 +327,11 @@
   font-size: 16px;
 }
 
+.card-price-baseline {
+  color: #aaa;
+  font-size: 14px;
+}
+
 /* Price History Section */
 .price-history-section {
   background: #1e1c1a;
@@ -322,6 +346,12 @@
   margin-bottom: 20px;
   color: #eee;
   font-size: 24px;
+}
+
+.card-detail-history-empty {
+  margin: 0;
+  color: #aaa;
+  font-style: italic;
 }
 
 /* Graph Styles */

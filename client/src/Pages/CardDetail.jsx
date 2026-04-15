@@ -1,41 +1,97 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import { getCardDetail } from '../API/CardAPI';
 import '../styles/pages/card-detail.css';
 import PriceHistoryGraph from '../Components/PriceHistoryGraph';
 
+function formatPrice(value) {
+  if (value == null) {
+    return 'N/A';
+  }
+
+  const numericValue = Number(value ?? 0);
+  return `$${numericValue.toFixed(2)}`;
+}
+
 const CardDetail = () => {
-  // Placeholder card data - replace with actual data from API query
-  const [card] = useState({
-    id: 'mtg_placeholder_001',
-    name: 'Black Lotus',
-    rarity: 'Rare',
-    setCode: 'LEA',
-    collectorNumber: '232',
-    artist: 'Christopher Rush',
-    colors: ['Black'],
-    imageUrl: 'https://cards.scryfall.io/large/front/b/d/bd8b60b6-0a43-4e6b-bfd7-5b7c4b214306.jpg?1562933555',
-    backImageUrl: null, // null if not a double-faced card
-    currentPrice: 2500.00,
-    previousPrice: 2350.00,
-    priceChange: 150.00,
-    priceChangePercent: 6.38,
-    description: 'Add three mana of any combination of colors to your mana pool, then draw a card and put Black Lotus into your graveyard.',
-  });
-
-  // Placeholder price history data
-  const [priceHistory] = useState([
-    { date: new Date('2026-04-01'), price: 2300 },
-    { date: new Date('2026-04-02'), price: 2320 },
-    { date: new Date('2026-04-03'), price: 2310 },
-    { date: new Date('2026-04-04'), price: 2350 },
-    { date: new Date('2026-04-05'), price: 2400 },
-    { date: new Date('2026-04-06'), price: 2380 },
-    { date: new Date('2026-04-07'), price: 2450 },
-    { date: new Date('2026-04-08'), price: 2420 },
-    { date: new Date('2026-04-09'), price: 2480 },
-    { date: new Date('2026-04-10'), price: 2500 },
-  ]);
-
+  const { cardId } = useParams();
+  const [card, setCard] = useState(null);
+  const [priceHistory, setPriceHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const [showBackImage, setShowBackImage] = useState(false);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function loadCard() {
+      setIsLoading(true);
+      setError('');
+      setShowBackImage(false);
+
+      try {
+        const data = await getCardDetail(cardId);
+        if (!isActive) {
+          return;
+        }
+
+        setCard(data.card);
+        setPriceHistory(
+          (data.priceHistory || []).map((entry) => ({
+            ...entry,
+            date: new Date(entry.date),
+          }))
+        );
+      } catch (err) {
+        if (!isActive) {
+          return;
+        }
+
+        setError(err.message || 'Failed to load this card.');
+        setCard(null);
+        setPriceHistory([]);
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadCard();
+
+    return () => {
+      isActive = false;
+    };
+  }, [cardId]);
+
+  const hasPriceHistory = priceHistory.length > 0;
+  const hasCurrentPrice = card?.currentPrice != null;
+  const priceChangeClass = useMemo(() => {
+    if (!card) {
+      return 'positive';
+    }
+
+    return card.priceChange >= 0 ? 'positive' : 'negative';
+  }, [card]);
+
+  if (isLoading) {
+    return (
+      <div className="card-detail">
+        <div className="card-detail-status">Loading card details...</div>
+      </div>
+    );
+  }
+
+  if (error || !card) {
+    return (
+      <div className="card-detail">
+        <div className="card-detail-status card-detail-status-error">
+          {error || 'Card details are unavailable.'}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="card-detail">
@@ -68,6 +124,7 @@ const CardDetail = () => {
             <p className="card-set-info">
               <span className="set-code">{card.setCode}</span>
               <span className="collector-number">#{card.collectorNumber}</span>
+              {card.setName && <span className="card-set-name">{card.setName}</span>}
             </p>
           </div>
 
@@ -97,6 +154,11 @@ const CardDetail = () => {
               <label>Artist</label>
               <p className="artist">{card.artist}</p>
             </div>
+
+            <div className="attribute">
+              <label>Type</label>
+              <p>{card.type || 'Unknown'}</p>
+            </div>
           </div>
 
           {/* Card Description */}
@@ -111,18 +173,24 @@ const CardDetail = () => {
           <div className="pricing-section">
             <div className="current-price">
               <span className="label">Current Price</span>
-              <span className="price">${card.currentPrice.toFixed(2)}</span>
+              <span className="price">{formatPrice(card.currentPrice)}</span>
             </div>
 
-            <div className={`price-change-indicator ${card.priceChange >= 0 ? 'positive' : 'negative'}`}>
-              <span className="arrow">
-                {card.priceChange >= 0 ? '▲' : '▼'}
-              </span>
-              <span className="percent">
-                {card.priceChangePercent >= 0 ? '+' : ''}
-                {card.priceChangePercent.toFixed(2)}%
-              </span>
-            </div>
+            {hasCurrentPrice && (
+              <div className={`price-change-indicator ${priceChangeClass}`}>
+                <span className="arrow">
+                  {card.priceChange >= 0 ? '▲' : '▼'}
+                </span>
+                <span className="percent">
+                  {card.priceChangePercent >= 0 ? '+' : ''}
+                  {card.priceChangePercent.toFixed(2)}%
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className="card-price-baseline">
+            Previous tracked price: {formatPrice(card.previousPrice)}
           </div>
         </div>
       </div>
@@ -130,7 +198,11 @@ const CardDetail = () => {
       {/* Price History Graph */}
       <div className="price-history-section">
         <h2>Price History</h2>
-        <PriceHistoryGraph priceData={priceHistory} cardName={card.name} />
+        {hasPriceHistory ? (
+          <PriceHistoryGraph priceData={priceHistory} cardName={card.name} />
+        ) : (
+          <p className="card-detail-history-empty">No tracked price history is available for this card yet.</p>
+        )}
       </div>
     </div>
   );

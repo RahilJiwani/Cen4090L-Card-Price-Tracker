@@ -25,10 +25,12 @@ def create_app():
     from .resources.test import api as test_namespace
     from .resources.auth import api as auth_namespace
     from .resources.search import api as search_namespace
+    from .resources.detail import api as detail_namespace
 
     api.add_namespace(test_namespace)
     api.add_namespace(auth_namespace)
     api.add_namespace(search_namespace)
+    api.add_namespace(detail_namespace)
 
     @api.route("/test")
     class TestResource(Resource):
