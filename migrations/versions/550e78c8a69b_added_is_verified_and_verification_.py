@@ -22,6 +22,12 @@ def upgrade():
         batch_op.add_column(sa.Column('is_verified', sa.Boolean(), nullable=False, server_default=sa.text('false')))
         batch_op.add_column(sa.Column('verification_token', sa.String(length=100), nullable=True))
 
+    with op.batch_alter_table('watchlists', schema=None) as batch_op:
+        batch_op.add_column(sa.Column('target_price', sa.Float(), nullable=True))
+        batch_op.add_column(sa.Column('percentage_drop', sa.Float(), nullable=True))
+        batch_op.add_column(sa.Column('lookback_days', sa.Integer(), nullable=True))
+        batch_op.add_column(sa.Column('added_on', sa.DateTime(), nullable=False, server_default=sa.text('NOW()')))
+
     # ### end Alembic commands ###
 
 

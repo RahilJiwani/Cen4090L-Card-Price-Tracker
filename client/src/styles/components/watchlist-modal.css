@@ -1,0 +1,188 @@
+/*
+ * WatchlistModal Styles — Dark Fantasy Theme
+ */
+
+.wl-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: wl-fade-in 0.15s ease;
+}
+
+@keyframes wl-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.wl-modal {
+    background: #1e1c1a;
+    border: 1px solid #5a4e3a;
+    border-radius: 10px;
+    padding: 32px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(0, 0, 0, 0.3);
+    animation: wl-slide-up 0.2s ease;
+    font-family: Georgia, serif;
+}
+
+@keyframes wl-slide-up {
+    from { transform: translateY(16px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.wl-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.wl-modal-title {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #d7a73f;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.wl-modal-close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.15s;
+}
+
+.wl-modal-close:hover {
+    color: #eee;
+}
+
+.wl-modal-subtitle {
+    margin: 0 0 24px;
+    color: #a39784;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.wl-modal-subtitle strong {
+    color: #eaddc5;
+}
+
+.wl-modal-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.wl-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.wl-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #c7b99e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.wl-hint {
+    font-size: 0.78rem;
+    font-weight: normal;
+    color: #6a6055;
+    text-transform: none;
+    letter-spacing: 0;
+    font-style: italic;
+}
+
+.wl-input {
+    background: #111;
+    border: 1px solid #5a4e3a;
+    border-radius: 4px;
+    color: #eee;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: Georgia, serif;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.wl-input:focus {
+    border-color: #d7a73f;
+}
+
+.wl-input::placeholder {
+    color: #4a4035;
+}
+
+/* Remove number input spinners */
+.wl-input::-webkit-inner-spin-button,
+.wl-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.wl-input[type=number] { -moz-appearance: textfield; }
+
+.wl-error {
+    color: #ffbaba;
+    background: #4a1f1f;
+    border: 1px solid #a33;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.wl-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.wl-btn {
+    padding: 11px 22px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.wl-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.wl-btn-cancel {
+    background: transparent;
+    border: 1px solid #5a4e3a;
+    color: #a39784;
+}
+
+.wl-btn-cancel:hover:not(:disabled) {
+    background: rgba(90, 78, 58, 0.2);
+    color: #eaddc5;
+}
+
+.wl-btn-confirm {
+    background: #2c2824;
+    border: 1px solid #8e7a54;
+    color: #d7a73f;
+}
+
+.wl-btn-confirm:hover:not(:disabled) {
+    background: #3a342e;
+    border-color: #d7a73f;
+}

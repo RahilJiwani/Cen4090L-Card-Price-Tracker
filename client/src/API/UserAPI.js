@@ -114,12 +114,15 @@ export async function getWatchlist() {
     return res.json();
 }
 
-export async function addToWatchlist(cardId) {
+export async function addToWatchlist(cardId, config = {}) {
     const res = await fetch("/api/dashboard/watchlist", {
         method: "POST",
         headers: JSON_HEADERS,
         credentials: "include",
-        body: JSON.stringify({ card_id: cardId }),
+        body: JSON.stringify({
+            card_id: cardId,
+            ...config,  // target_price, percentage_drop, lookback_days (all optional)
+        }),
     });
 
     if (!res.ok) {

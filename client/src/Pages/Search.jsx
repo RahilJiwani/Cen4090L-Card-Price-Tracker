@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { searchCards } from '../API/CardAPI';
 import { getWatchlist, addToWatchlist, removeFromWatchlist } from '../API/UserAPI';
+import WatchlistModal from '../Components/WatchlistModal';
 
 const SearchResultRow = ({ card, watchlist, toggleWatchlist }) => {
     const [selectedPrintingId, setSelectedPrintingId] = useState(card.id);
@@ -10,7 +11,7 @@ const SearchResultRow = ({ card, watchlist, toggleWatchlist }) => {
 
     const displayId = activePrinting ? activePrinting.id : card.id;
     const displayImageUrl = activePrinting ? activePrinting.imageUrl : card.imageUrl;
-    const displaySet = activePrinting ? activePrinting.setCode : card.set;
+    const displaySet = activePrinting ? (activePrinting.setName || activePrinting.setCode) : card.set;
     const displayPrice = activePrinting ? activePrinting.price : card.price;
     const isWatched = watchlist.has(displayId);
 
@@ -57,7 +58,7 @@ const SearchResultRow = ({ card, watchlist, toggleWatchlist }) => {
                     className={`search-legacy-track-button ${isWatched ? "search-legacy-track-button--active" : "search-legacy-track-button--default"}`}
                     onClick={(e) => {
                         e.preventDefault();
-                        toggleWatchlist(displayId);
+                        toggleWatchlist(displayId, card.name);
                     }}
                 >
                     {isWatched ? "− Unbind" : "+ Watchlist"}
@@ -74,6 +75,7 @@ function SearchPage() {
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState(null);
     const [watchlist, setWatchlist] = useState(new Set());
+    const [pendingCard, setPendingCard] = useState(null); // {id, name} waiting for modal
 
     useEffect(() => {
         const loadWatchlist = async () => {
@@ -90,6 +92,8 @@ function SearchPage() {
     }, []);
 
     useEffect(() => {
+        const controller = new AbortController();
+
         const timer = setTimeout(() => {
             const fetchCards = async () => {
                 if (!searchQuery.trim() && filterType === "All") {
@@ -101,58 +105,71 @@ function SearchPage() {
                 setError(null);
 
                 try {
-                    const data = await searchCards({ searchQuery, filterType });
+                    const data = await searchCards({ searchQuery, filterType, signal: controller.signal });
                     setResults(data.cards || []);
                 } catch (err) {
+                    if (err.name === 'AbortError') {
+                        return; // Silently ignore aborted requests
+                    }
                     console.error("Error fetching cards:", err);
                     setError("The magical leyline was disrupted. Please try again.");
                     setResults([]);
                 } finally {
-                    setIsSearching(false);
+                    if (!controller.signal.aborted) {
+                        setIsSearching(false);
+                    }
                 }
             };
 
             fetchCards();
         }, 250); // 250ms debounce
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            controller.abort();
+        };
     }, [searchQuery, filterType]);
 
-    const toggleWatchlist = async (cardId) => {
+    const toggleWatchlist = async (cardId, cardName) => {
         const isWatched = watchlist.has(cardId);
 
+        if (!isWatched) {
+            // Open modal so user can configure alert thresholds before adding
+            setPendingCard({ id: cardId, name: cardName });
+            return;
+        }
+
+        // Unbind immediately — no modal needed
         setWatchlist((prev) => {
             const newSet = new Set(prev);
-            if (isWatched) {
-                newSet.delete(cardId);
-            } else {
-                newSet.add(cardId);
-            }
+            newSet.delete(cardId);
             return newSet;
         });
 
         try {
-            if (isWatched) {
-                await removeFromWatchlist(cardId);
-            } else {
-                await addToWatchlist(cardId);
-            }
+            await removeFromWatchlist(cardId);
         } catch (err) {
-            console.error("Failed to update watchlist:", err);
-            setWatchlist((prev) => {
-                const newSet = new Set(prev);
-                if (isWatched) {
-                    newSet.add(cardId);
-                } else {
-                    newSet.delete(cardId);
-                }
-                return newSet;
-            });
+            console.error("Failed to remove from watchlist:", err);
+            setWatchlist((prev) => { const s = new Set(prev); s.add(cardId); return s; });
         }
+    };
+
+    const handleModalAdded = () => {
+        if (!pendingCard) return;
+        setWatchlist((prev) => { const s = new Set(prev); s.add(pendingCard.id); return s; });
+        setPendingCard(null);
     };
 
     return (
         <div className="search-legacy-page">
+            {pendingCard && (
+                <WatchlistModal
+                    cardId={pendingCard.id}
+                    cardName={pendingCard.name}
+                    onClose={() => setPendingCard(null)}
+                    onAdded={handleModalAdded}
+                />
+            )}
             <div className="search-legacy-container">
                 <h1 className="search-legacy-title">Grimoire Search</h1>
 

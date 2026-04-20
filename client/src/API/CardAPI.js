@@ -19,7 +19,7 @@ async function parseErrorResponse(res, fallbackMessage) {
     throw err;
 }
 
-export async function searchCards({ searchQuery, filterType }) {
+export async function searchCards({ searchQuery, filterType, signal }) {
     const queryParams = new URLSearchParams();
     queryParams.append('q', searchQuery || 'format:standard');
 
@@ -29,6 +29,7 @@ export async function searchCards({ searchQuery, filterType }) {
 
     const res = await fetch(`${CARD_API_BASE}/?${queryParams.toString()}`, {
         credentials: 'include',
+        signal,
     });
 
     if (!res.ok) {

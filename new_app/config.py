@@ -20,9 +20,9 @@ class Config:
     SQLALCHEMY_DATABASE_URI = config('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False # should be moved to .env for security.
 #    # Email settings
-    MAIL_SERVER = config('MAIL_SERVER', default=None)
-    MAIL_PORT = config('MAIL_PORT', default=587, cast=int)
+    MAIL_SERVER = config('MAIL_SERVER', default=config('EMAIL_HOST', default=None))
+    MAIL_PORT = config('MAIL_PORT', default=config('EMAIL_PORT', default=587, cast=int), cast=int)
     MAIL_USE_TLS = True
-    MAIL_USERNAME = config('MAIL_USERNAME', default=None)
-    MAIL_PASSWORD = config('MAIL_PASSWORD', default=None)
-    MAIL_DEFAULT_SENDER = config('MAIL_FROM', default=None)
+    MAIL_USERNAME = config('MAIL_USERNAME', default=config('EMAIL_USERNAME', default=config('EMAIL_FROM', default=None)))
+    MAIL_PASSWORD = config('MAIL_PASSWORD', default=config('EMAIL_PASSWORD', default=None))
+    MAIL_DEFAULT_SENDER = config('MAIL_FROM', default=config('EMAIL_FROM', default=None))

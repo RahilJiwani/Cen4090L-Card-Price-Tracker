@@ -2,7 +2,7 @@ from flask_restx import Namespace, Resource, reqparse
 import requests
 from sqlalchemy import func
 
-from ..models import Card, PriceHistory
+from ..models import Card, PriceHistory, get_set_name
 from ..exts import db
 
 api = Namespace("search", description="Card searching operations")
@@ -63,6 +63,7 @@ class CardSearch(Resource):
                 printings_by_name.setdefault(p.card_name, []).append({
                     "id": p.card_id,
                     "setCode": p.set_code.upper(),
+                    "setName": get_set_name(p.set_code),
                     "imageUrl": p.image_url,
                     "price": f"${price_val:,.2f}" if price_val else "N/A"
                 })

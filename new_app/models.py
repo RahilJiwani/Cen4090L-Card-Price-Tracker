@@ -68,3 +68,29 @@ class Watchlist(db.Model):
     __tablename__ = 'watchlists'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     card_id = db.Column(db.Integer, db.ForeignKey('cards.card_id'), primary_key=True)
+
+    # Alert configuration — all optional
+    target_price    = db.Column(db.Float,   nullable=True)  # Absolute price alert threshold
+    percentage_drop = db.Column(db.Float,   nullable=True)  # % drop alert (e.g. 5.0 = 5%)
+    lookback_days   = db.Column(db.Integer, nullable=True)  # Window for max-price baseline
+    added_on        = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+import requests
+
+_sets_cache = {}
+
+def get_set_name(code):
+    """Utility to map 3-letter MTG set codes to full set names via Scryfall API"""
+    global _sets_cache
+    if not code:
+        return ""
+    if not _sets_cache:
+        try:
+            resp = requests.get('https://api.scryfall.com/sets')
+            if resp.status_code == 200:
+                data = resp.json().get('data', [])
+                for s in data:
+                    _sets_cache[s['code']] = s['name']
+        except Exception:
+            pass
+    return _sets_cache.get(code.lower(), code.upper())

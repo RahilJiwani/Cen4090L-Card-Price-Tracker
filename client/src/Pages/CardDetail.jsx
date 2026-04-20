@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { getCardDetail } from '../API/CardAPI';
+import { getWatchlist, addToWatchlist, removeFromWatchlist } from '../API/UserAPI';
+import WatchlistModal from '../Components/WatchlistModal';
 import '../styles/pages/card-detail.css';
 import PriceHistoryGraph from '../Components/PriceHistoryGraph';
 
@@ -23,6 +25,19 @@ const CardDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showBackImage, setShowBackImage] = useState(false);
+  const [watchlist, setWatchlist] = useState(new Set());
+  const [showWatchlistModal, setShowWatchlistModal] = useState(false);
+
+  // Load watchlist on mount
+  useEffect(() => {
+    getWatchlist()
+      .then(data => {
+        if (data?.watchlist) {
+          setWatchlist(new Set(data.watchlist.map(c => c.id)));
+        }
+      })
+      .catch(err => console.error('Failed to load watchlist:', err));
+  }, []);
 
   useEffect(() => {
     let isActive = true;
@@ -71,6 +86,32 @@ const CardDetail = () => {
 
   const hasPriceHistory = priceHistory.length > 0;
   const hasCurrentPrice = card?.currentPrice != null;
+  const isWatched = card ? watchlist.has(card.id) : false;
+
+  const toggleWatchlist = async () => {
+    if (!card) return;
+    const cardId = card.id;
+
+    if (!isWatched) {
+      setShowWatchlistModal(true);
+      return;
+    }
+
+    // Unbind immediately
+    setWatchlist(prev => { const s = new Set(prev); s.delete(cardId); return s; });
+    try {
+      await removeFromWatchlist(cardId);
+    } catch (err) {
+      console.error('Failed to remove from watchlist:', err);
+      setWatchlist(prev => { const s = new Set(prev); s.add(cardId); return s; });
+    }
+  };
+
+  const handleModalAdded = () => {
+    if (card) setWatchlist(prev => { const s = new Set(prev); s.add(card.id); return s; });
+    setShowWatchlistModal(false);
+  };
+
   const priceChangeClass = useMemo(() => {
     if (!card) {
       return 'positive';
@@ -99,6 +140,14 @@ const CardDetail = () => {
 
   return (
     <div className="card-detail">
+      {showWatchlistModal && card && (
+        <WatchlistModal
+          cardId={card.id}
+          cardName={card.name}
+          onClose={() => setShowWatchlistModal(false)}
+          onAdded={handleModalAdded}
+        />
+      )}
       <div className="card-detail-container">
         {/* Left Section - Card Images */}
         <div className="card-images-section">
@@ -118,6 +167,15 @@ const CardDetail = () => {
               </button>
             )}
           </div>
+          {/* Watchlist button below the card art */}
+          <button
+            className={`card-watchlist-button ${
+              isWatched ? 'card-watchlist-button--active' : 'card-watchlist-button--default'
+            }`}
+            onClick={toggleWatchlist}
+          >
+            {isWatched ? '− Unbind from Grimoire' : '+ Add to Grimoire'}
+          </button>
         </div>
 
         {/* Right Section - Card Details */}

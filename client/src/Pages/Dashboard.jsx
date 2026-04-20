@@ -1,28 +1,27 @@
 import React from "react";
 import useAuth from "../Hooks/useAuth.js";
+import { getWatchlist, removeFromWatchlist } from "../API/UserAPI.js";
+import WatchlistModal from "../Components/WatchlistModal.jsx";
 
 function DashboardPage() {
     const { user } = useAuth();
     const [watchlist, setWatchlist] = React.useState([]);
+    const [editingCard, setEditingCard] = React.useState(null);
+
+    const refreshWatchlist = () => {
+        getWatchlist()
+            .then(data => setWatchlist(data.watchlist || []))
+            .catch(err => console.error("Failed to load watchlist:", err));
+    };
 
     React.useEffect(() => {
-        fetch("/api/dashboard/watchlist", { credentials: "include" })
-            .then(res => res.json())
-            .then(data => setWatchlist(data.watchlist || []));
+        refreshWatchlist();
     }, []);
 
     const handleRemoveCard = async (cardId) => {
         try {
-            const response = await fetch(`/api/dashboard/watchlist/${cardId}`, {
-                method: "DELETE",
-                credentials: "include"
-            });
-
-            if (response.ok) {
-                setWatchlist(prevWatchlist => prevWatchlist.filter(card => card.id !== cardId));
-            } else {
-                console.error("Failed to remove card from backend");
-            }
+            await removeFromWatchlist(cardId);
+            setWatchlist(prevWatchlist => prevWatchlist.filter(card => card.id !== cardId));
         } catch (error) {
             console.error("Error occurred while removing the card:", error);
         }
@@ -69,20 +68,35 @@ function DashboardPage() {
                                                     <h3 className="search-legacy-card-name">{card.name}</h3>
                                                 </div>
                                                 <p className="search-legacy-card-type">{card.type || "Card"}</p>
-                                                <p className="search-legacy-card-set">{card.set.toUpperCase()}</p>
+                                                <p className="search-legacy-card-set">{card.set}</p>
                                             </div>
                                         </div>
                                     </a>
                                     <div className="search-legacy-action-container">
                                         <span className="search-legacy-price">{card.price}</span>
-                                        <button
-                                            type="button"
-                                            className="dashboard-legacy-remove-button"
-                                            onClick={() => handleRemoveCard(card.id)}
-                                            style={{marginTop: "8px"}}
-                                        >
-                                            - Unbind
-                                        </button>
+                                        <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                                            <button
+                                                type="button"
+                                                className="search-legacy-track-button search-legacy-track-button--default"
+                                                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setEditingCard(card);
+                                                }}
+                                            >
+                                                <span>⚙</span><span>Configure</span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="search-legacy-track-button search-legacy-track-button--active"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleRemoveCard(card.id);
+                                                }}
+                                            >
+                                                − Unbind
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -90,6 +104,19 @@ function DashboardPage() {
                     )}
                 </div>
             </div>
+            
+            {editingCard && (
+                <WatchlistModal
+                    cardId={editingCard.id}
+                    cardName={editingCard.name}
+                    initialConfig={editingCard.config}
+                    onClose={() => setEditingCard(null)}
+                    onAdded={() => {
+                        setEditingCard(null);
+                        refreshWatchlist();
+                    }}
+                />
+            )}
         </div>
     );
 }
