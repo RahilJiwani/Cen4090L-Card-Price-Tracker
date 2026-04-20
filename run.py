@@ -6,6 +6,24 @@ import sys
 from pathlib import Path
 
 
+def kill_port(port: int) -> None:
+    """Kill any process currently listening on the given port (Windows only)."""
+    if sys.platform != "win32":
+        return
+    try:
+        result = subprocess.run(
+            ["netstat", "-ano"],
+            capture_output=True, text=True
+        )
+        for line in result.stdout.splitlines():
+            if f":{port} " in line and "LISTENING" in line:
+                pid = line.split()[-1]
+                subprocess.run(["taskkill", "/F", "/PID", pid],
+                               capture_output=True)
+    except Exception:
+        pass
+
+
 def resolve_npm_command() -> str:
     """Return a Windows-safe npm executable path, or raise if unavailable."""
     candidates = ["npm", "npm.cmd", "npm.exe"]
@@ -51,6 +69,11 @@ if __name__ == "__main__":
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         startupinfo.wShowWindow = subprocess.SW_HIDE
+
+    # Clear any lingering processes from a previous run
+    kill_port(5008)
+    for port in range(5173, 5181):  # Vite auto-increments if port is busy
+        kill_port(port)
 
     flask_process = subprocess.Popen(
         [python_exe, "-m", "flask", "--app", "new_app.app:app", "run", "--port", "5008"],
