@@ -2,6 +2,70 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 
 import { searchCards } from '../API/CardAPI';
+import { getWatchlist, addToWatchlist, removeFromWatchlist } from '../API/UserAPI';
+
+const SearchResultRow = ({ card, watchlist, toggleWatchlist }) => {
+    const [selectedPrintingId, setSelectedPrintingId] = useState(card.id);
+    const activePrinting = (card.printings || []).find(p => p.id === selectedPrintingId);
+
+    const displayId = activePrinting ? activePrinting.id : card.id;
+    const displayImageUrl = activePrinting ? activePrinting.imageUrl : card.imageUrl;
+    const displaySet = activePrinting ? activePrinting.setCode : card.set;
+    const displayPrice = activePrinting ? activePrinting.price : card.price;
+    const isWatched = watchlist.has(displayId);
+
+    return (
+        <div className="search-legacy-card">
+            <Link to={`/card/${displayId}`} className="search-legacy-card-link">
+                <div className="search-legacy-card-content">
+                    <img
+                        src={displayImageUrl}
+                        alt={card.name}
+                        className="search-legacy-card-image"
+                    />
+                    <div className="search-legacy-card-details">
+                        <div className="search-legacy-card-header">
+                            <h3 className="search-legacy-card-name">{card.name}</h3>
+                            <span className="search-legacy-mana-cost">{card.manaCost}</span>
+                        </div>
+                        <p className="search-legacy-card-type">{card.type}</p>
+                        <div style={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+                            <p className="search-legacy-card-set" style={{margin: 0}}>{displaySet}</p>
+                            {card.printings && card.printings.length > 1 && (
+                                <select 
+                                    className="printing-selector" 
+                                    value={displayId} 
+                                    onChange={(e) => {
+                                        e.preventDefault();
+                                        setSelectedPrintingId(parseInt(e.target.value));
+                                    }}
+                                    onClick={(e) => e.preventDefault()}
+                                    style={{padding: "2px 5px", background: "#222", color: "#eaddc5", border: "1px solid #d4af37", borderRadius: "4px", outline: "none", cursor: "pointer"}}
+                                >
+                                    {card.printings.map(p => (
+                                        <option key={p.id} value={p.id}>{p.setCode}</option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </Link>
+            <div className="search-legacy-action-container">
+                <span className="search-legacy-price">{displayPrice}</span>
+                <button
+                    className={`search-legacy-track-button ${isWatched ? "search-legacy-track-button--active" : "search-legacy-track-button--default"}`}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        toggleWatchlist(displayId);
+                    }}
+                >
+                    {isWatched ? "− Unbind" : "+ Watchlist"}
+                </button>
+            </div>
+        </div>
+    );
+};
 
 function SearchPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -10,6 +74,20 @@ function SearchPage() {
     const [isSearching, setIsSearching] = useState(false);
     const [error, setError] = useState(null);
     const [watchlist, setWatchlist] = useState(new Set());
+
+    useEffect(() => {
+        const loadWatchlist = async () => {
+            try {
+                const data = await getWatchlist();
+                if (data && data.watchlist) {
+                    setWatchlist(new Set(data.watchlist.map(c => c.id)));
+                }
+            } catch (err) {
+                console.error("Failed to load watchlist:", err);
+            }
+        };
+        loadWatchlist();
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -40,16 +118,37 @@ function SearchPage() {
         return () => clearTimeout(timer);
     }, [searchQuery, filterType]);
 
-    const toggleWatchlist = (cardId) => {
+    const toggleWatchlist = async (cardId) => {
+        const isWatched = watchlist.has(cardId);
+
         setWatchlist((prev) => {
             const newSet = new Set(prev);
-            if (newSet.has(cardId)) {
+            if (isWatched) {
                 newSet.delete(cardId);
             } else {
                 newSet.add(cardId);
             }
             return newSet;
         });
+
+        try {
+            if (isWatched) {
+                await removeFromWatchlist(cardId);
+            } else {
+                await addToWatchlist(cardId);
+            }
+        } catch (err) {
+            console.error("Failed to update watchlist:", err);
+            setWatchlist((prev) => {
+                const newSet = new Set(prev);
+                if (isWatched) {
+                    newSet.add(cardId);
+                } else {
+                    newSet.delete(cardId);
+                }
+                return newSet;
+            });
+        }
     };
 
     return (
@@ -92,36 +191,13 @@ function SearchPage() {
                         <p className="search-legacy-loading-text">Channeling mana to fetch cards...</p>
                     ) : results.length > 0 ? (
                         results.map((card) => {
-                            const isWatched = watchlist.has(card.id);
                             return (
-                                <div key={`${card.id}-${card.scryfallId}`} className="search-legacy-card">
-                                    <Link to={`/card/${card.id}`} className="search-legacy-card-link">
-                                        <div className="search-legacy-card-content">
-                                            <img
-                                                src={card.imageUrl}
-                                                alt={card.name}
-                                                className="search-legacy-card-image"
-                                            />
-                                            <div className="search-legacy-card-details">
-                                                <div className="search-legacy-card-header">
-                                                    <h3 className="search-legacy-card-name">{card.name}</h3>
-                                                    <span className="search-legacy-mana-cost">{card.manaCost}</span>
-                                                </div>
-                                                <p className="search-legacy-card-type">{card.type}</p>
-                                                <p className="search-legacy-card-set">{card.set}</p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                    <div className="search-legacy-action-container">
-                                        <span className="search-legacy-price">{card.price}</span>
-                                        <button
-                                            className={`search-legacy-track-button ${isWatched ? "search-legacy-track-button--active" : "search-legacy-track-button--default"}`}
-                                            onClick={() => toggleWatchlist(card.id)}
-                                        >
-                                            {isWatched ? "− Unbind" : "+ Watchlist"}
-                                        </button>
-                                    </div>
-                                </div>
+                                <SearchResultRow 
+                                    key={`${card.id}-${card.scryfallId}`}
+                                    card={card}
+                                    watchlist={watchlist}
+                                    toggleWatchlist={toggleWatchlist}
+                                />
                             );
                         })
                     ) : (

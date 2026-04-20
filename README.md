@@ -1,6 +1,6 @@
 *Last updated 3/22/2026*
 # Cen4090L-Card-Price-Tracker
-Software engineering Lab project based around making a python program and website that aims to notify users when the price of a Magic The Gathering card falls below a certain amount.
+Software engineering Lab project based around making a python program and website that aims to notify users when the price of a Magic The Gathering card falls below a certain $ amount via email using a target price or a % drop in price from the highest price in a user defined window of time prior to addition to the watchlist which is called the lookback period.
 
 ## Prerequisites
 - Python 3.14+ installed

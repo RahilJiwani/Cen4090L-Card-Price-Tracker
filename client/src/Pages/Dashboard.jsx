@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import useAuth from "../Hooks/useAuth.js";
 
 function DashboardPage() {
@@ -50,35 +50,41 @@ function DashboardPage() {
                             </p>
                         </div>
                     ) : (
-                        <div className="dashboard-legacy-card-grid">
+                        <div className="search-legacy-results-container">
                             {watchlist.map(card => (
-                                <article key={card.id} className="dashboard-legacy-mtg-card">
-                                    <div className="dashboard-legacy-card-header">
-                                        <span className="dashboard-legacy-card-name">{card.name}</span>
-                                    </div>
-
-                                    <div className="dashboard-legacy-type-line">
-                                        <span>{card.set.toUpperCase()}</span>
-                                        <span className="dashboard-legacy-set-symbol">*</span>
-                                    </div>
-
-                                    <div className="dashboard-legacy-card-text-box">
-                                        <div>
-                                            <span className="dashboard-legacy-price-tag">Current Price</span>
-                                            <strong className="dashboard-legacy-price-value">{card.price}</strong>
+                                <div key={card.id} className="search-legacy-card">
+                                    <a href={`/card/${card.id}`} className="search-legacy-card-link">
+                                        <div className="search-legacy-card-content">
+                                            {card.imageUrl ? (
+                                                <img
+                                                    src={card.imageUrl}
+                                                    alt={card.name}
+                                                    className="search-legacy-card-image"
+                                                />
+                                            ) : (
+                                                <div className="search-legacy-card-image" style={{backgroundColor: '#2a2a2a'}} />
+                                            )}
+                                            <div className="search-legacy-card-details">
+                                                <div className="search-legacy-card-header">
+                                                    <h3 className="search-legacy-card-name">{card.name}</h3>
+                                                </div>
+                                                <p className="search-legacy-card-type">{card.type || "Card"}</p>
+                                                <p className="search-legacy-card-set">{card.set.toUpperCase()}</p>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div className="dashboard-legacy-card-footer">
+                                    </a>
+                                    <div className="search-legacy-action-container">
+                                        <span className="search-legacy-price">{card.price}</span>
                                         <button
                                             type="button"
                                             className="dashboard-legacy-remove-button"
                                             onClick={() => handleRemoveCard(card.id)}
+                                            style={{marginTop: "8px"}}
                                         >
-                                            Remove Card
+                                            - Unbind
                                         </button>
                                     </div>
-                                </article>
+                                </div>
                             ))}
                         </div>
                     )}

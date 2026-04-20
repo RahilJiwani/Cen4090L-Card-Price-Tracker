@@ -143,6 +143,9 @@ def serialize_card_detail(card_data, db_card):
     if previous_price:
         price_change_percent = (price_change / previous_price) * 100
 
+    printings = Card.query.filter_by(card_name=db_card.card_name).all()
+    printings_data = [{"id": p.card_id, "setCode": p.set_code.upper()} for p in printings]
+
     return {
         "card": {
             "id": db_card.card_id,
@@ -165,6 +168,7 @@ def serialize_card_detail(card_data, db_card):
             "priceChangePercent": price_change_percent,
         },
         "priceHistory": get_price_history(db_card, current_price),
+        "printings": printings_data
     }
 
 

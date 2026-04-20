@@ -1,7 +1,9 @@
 from flask_restx import Namespace, Resource, reqparse
 import requests
+from sqlalchemy import func
 
-from ..models import Card
+from ..models import Card, PriceHistory
+from ..exts import db
 
 api = Namespace("search", description="Card searching operations")
 
@@ -36,6 +38,35 @@ class CardSearch(Resource):
             db_cards = Card.query.filter(Card.scryfall_id.in_(scryfall_ids)).all() if scryfall_ids else []
             db_card_map = {c.scryfall_id: c for c in db_cards}
             
+            card_names = list(set([c.card_name for c in db_cards]))
+            all_printings = Card.query.filter(Card.card_name.in_(card_names)).all() if card_names else []
+            
+            subquery = db.session.query(
+                PriceHistory.card_id,
+                func.max(PriceHistory.date).label('max_date')
+            ).group_by(PriceHistory.card_id).subquery()
+            
+            latest_prices = db.session.query(
+                PriceHistory.card_id,
+                PriceHistory.price
+            ).join(
+                subquery,
+                (PriceHistory.card_id == subquery.c.card_id) & 
+                (PriceHistory.date == subquery.c.max_date)
+            ).all()
+            
+            price_map = {p.card_id: p.price for p in latest_prices}
+            
+            printings_by_name = {}
+            for p in all_printings:
+                price_val = price_map.get(p.card_id)
+                printings_by_name.setdefault(p.card_name, []).append({
+                    "id": p.card_id,
+                    "setCode": p.set_code.upper(),
+                    "imageUrl": p.image_url,
+                    "price": f"${price_val:,.2f}" if price_val else "N/A"
+                })
+            
             results = []
             for card in search_cards: # Limit to 20 results
                 try:
@@ -58,7 +89,8 @@ class CardSearch(Resource):
                         "type": card.get("type_line", ""),
                         "manaCost": card.get("mana_cost", ""),
                         "price": f"${card.get('prices', {}).get('usd') or '0.00'}",
-                        "imageUrl": image_url
+                        "imageUrl": image_url,
+                        "printings": printings_by_name.get(db_card.card_name, [])
                     })
                 except Exception as e:
                     continue

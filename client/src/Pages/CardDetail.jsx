@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { getCardDetail } from '../API/CardAPI';
 import '../styles/pages/card-detail.css';
@@ -16,8 +16,10 @@ function formatPrice(value) {
 
 const CardDetail = () => {
   const { cardId } = useParams();
+  const navigate = useNavigate();
   const [card, setCard] = useState(null);
   const [priceHistory, setPriceHistory] = useState([]);
+  const [printings, setPrintings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showBackImage, setShowBackImage] = useState(false);
@@ -43,6 +45,7 @@ const CardDetail = () => {
             date: new Date(entry.date),
           }))
         );
+        setPrintings(data.printings || []);
       } catch (err) {
         if (!isActive) {
           return;
@@ -51,6 +54,7 @@ const CardDetail = () => {
         setError(err.message || 'Failed to load this card.');
         setCard(null);
         setPriceHistory([]);
+        setPrintings([]);
       } finally {
         if (isActive) {
           setIsLoading(false);
@@ -121,11 +125,24 @@ const CardDetail = () => {
           {/* Header Info */}
           <div className="card-header">
             <h1 className="card-name">{card.name}</h1>
-            <p className="card-set-info">
+            <div className="card-set-info">
               <span className="set-code">{card.setCode}</span>
               <span className="collector-number">#{card.collectorNumber}</span>
               {card.setName && <span className="card-set-name">{card.setName}</span>}
-            </p>
+              {printings.length > 1 && (
+                 <select 
+                    className="printing-selector" 
+                    value={card.id} 
+                    onChange={(e) => navigate(`/card/${e.target.value}`)}
+                    style={{marginLeft: "15px", padding: "4px 8px", background: "#222", color: "#eaddc5", border: "1px solid #d4af37", borderRadius: "4px", outline: "none", cursor: "pointer"}}
+                    title="Select an alternative printing"
+                 >
+                    {printings.map(p => (
+                        <option key={p.id} value={p.id}>{p.setCode}</option>
+                    ))}
+                 </select>
+              )}
+            </div>
           </div>
 
           {/* Card Attributes */}

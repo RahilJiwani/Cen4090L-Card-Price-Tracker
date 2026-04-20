@@ -1,6 +1,9 @@
 import React from "react";
+import useAuth from "../Hooks/useAuth.js";
 
 function AccountPage() {
+    const { user } = useAuth();
+
     return (
         <div className="page-shell">
             <div className="page-container account-stack">
@@ -12,12 +15,12 @@ function AccountPage() {
 
                     <div className="account-info-group">
                         <label className="account-label">Username</label>
-                        <p className="account-text">Planeswalker_1</p>
+                        <p className="account-text">{user?.username || "N/A"}</p>
                     </div>
 
                     <div className="account-info-group">
                         <label className="account-label">Email Address</label>
-                        <p className="account-text">user@fsu.edu</p>
+                        <p className="account-text">{user?.email || "N/A"}</p>
                     </div>
 
                     <div className="button-group">
