@@ -36,28 +36,32 @@ def wait_for_port(host: str, port: int, process: subprocess.Popen, timeout: floa
 
     raise TimeoutError(f"Flask did not open {host}:{port} within {timeout} seconds.")
 
+
 if __name__ == "__main__":
     root_dir = Path(__file__).resolve().parent
     client_dir = root_dir / "client"
 
+    # Always use the venv Python so Flask and dependencies are available
+    venv_python = root_dir / ".venv" / "Scripts" / "python.exe"
+    python_exe = str(venv_python) if venv_python.exists() else sys.executable
+
+    # Prevent child processes from opening their own console windows on Windows
+    startupinfo = None
+    if sys.platform == "win32":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.wShowWindow = subprocess.SW_HIDE
+
     flask_process = subprocess.Popen(
-        [
-            sys.executable,
-            "-m",
-            "flask",
-            "--app",
-            "new_app.app:app",
-            "run",
-            "--port",
-            "5008",
-        ],
+        [python_exe, "-m", "flask", "--app", "new_app.app:app", "run", "--port", "5008"],
         cwd=root_dir,
+        startupinfo=startupinfo,
     )
 
     try:
         wait_for_port("127.0.0.1", 5008, flask_process)
         npm_cmd = resolve_npm_command()
-        npm_process = subprocess.Popen([npm_cmd, "run", "dev"], cwd=client_dir)
+        npm_process = subprocess.Popen([npm_cmd, "run", "dev"], cwd=client_dir, startupinfo=startupinfo)
 
         try:
             while True:
