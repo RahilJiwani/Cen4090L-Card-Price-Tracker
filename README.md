@@ -15,7 +15,7 @@ We have created multiple .ps1 and python scripts to run for workflow automation.
 NOTE: Original boostrap was a .ps1 and was meant to be ran every fetch, but now it should only be ran at the beginning of the project setup.
 
 ## Syncing dependencies
-To sync all dependencies and install them to the local machine use the ```./scripts/sync.py```. This script will install all python and npm dependencies for the project. This should be ran every fetch to make sure your installed packages match the current branch versions.
+To sync all dependencies and install them to the local machine use the ```python ./scripts/sync.py```. This script will install all python and npm dependencies for the project. This should be ran every fetch to make sure your installed packages match the current branch versions.
 
 ## Running
 To run the project we use ```python run.py```. it runs both the flask API and the js frontend from a single console :).
