@@ -1,8 +1,42 @@
 import React from "react";
 import useAuth from "../Hooks/useAuth.js";
+import { useNavigate } from "react-router-dom";
 
 function AccountPage() {
-    const { user } = useAuth();
+    const { user, logout } = useAuth(); 
+    const navigate = useNavigate();
+
+    const handleDeleteAccount = async () => {
+        // 1. Confirm with the user
+        const confirmed = window.confirm(
+            "Are you absolutely sure you want to delete your account? This action cannot be undone."
+        );
+
+        if (confirmed) {
+            try {
+                // 2. Call your backend API
+                const response = await fetch("/api/account/delete", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}` 
+                    }
+                });
+
+                if (response.ok) {
+                    alert("Account successfully deleted.");
+                    logout(); 
+                    navigate("/"); 
+                } else {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.message || "Failed to delete account"}`);
+                }
+            } catch (error) {
+                console.error("Delete account error:", error);
+                alert("An error occurred while trying to delete your account.");
+            }
+        }
+    };
 
     return (
         <div className="page-shell">
@@ -32,7 +66,12 @@ function AccountPage() {
                 <section className="danger-zone">
                     <h2 className="danger-title">Danger Zone</h2>
                     <p className="danger-text">Once you delete your account, there is no going back. Please be certain.</p>
-                    <button className="danger-button">Delete Account</button>
+                    <button 
+                        className="danger-button" 
+                        onClick={handleDeleteAccount}
+                    >
+                        Delete Account
+                    </button>
                 </section>
             </div>
         </div>

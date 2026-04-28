@@ -8,6 +8,7 @@ Software engineering Lab project based around making a python program and websit
 
 ## Setup
 We have created multiple .ps1 and python scripts to run for workflow automation. All scripts are located in the ```./scripts``` or root directory. To initialize the project run the ```./scripts/bootstrap.ps1```. The boostrap focuses on setting up the project and ensuring you have the prerequisites. Here is a list of its steps:
+
  - Checks for all prerequisite parts.
  - Creates a .venv file if not already setup.
  - Creates a .env file if not already setup.
