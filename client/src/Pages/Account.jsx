@@ -1,20 +1,21 @@
 import React from "react";
 import useAuth from "../Hooks/useAuth.js";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function AccountPage() {
     const { user, logout } = useAuth(); 
     const navigate = useNavigate();
-
+    const [isEditing, setIsEditing] = useState(false);
+    const [username, setUsername] = useState(user?.username || "");
+    const [email, setEmail] = useState(user?.email || "");
     const handleDeleteAccount = async () => {
-        // 1. Confirm with the user
         const confirmed = window.confirm(
             "Are you absolutely sure you want to delete your account? This action cannot be undone."
         );
 
         if (confirmed) {
             try {
-                // 2. Call your backend API
                 const response = await fetch("/api/account/delete", {
                     method: "DELETE",
                     headers: {
@@ -48,19 +49,29 @@ function AccountPage() {
                     </div>
 
                     <div className="account-info-group">
-                        <label className="account-label">Username</label>
-                        <p className="account-text">{user?.username || "N/A"}</p>
-                    </div>
+            <label className="account-label">Username</label>
+            {isEditing
+                ? <input value={username} onChange={e => setUsername(e.target.value)} />
+                : <p className="account-text">{username || "N/A"}</p>
+            }
 
-                    <div className="account-info-group">
-                        <label className="account-label">Email Address</label>
-                        <p className="account-text">{user?.email || "N/A"}</p>
-                    </div>
+        </div>
 
-                    <div className="button-group">
-                        <button className="secondary-button">Edit Profile</button>
-                        <button className="secondary-button">Change Password</button>
-                    </div>
+        <div className="account-info-group">
+            <label className="account-label">Email Address</label>
+            {isEditing
+                ? <input value={email} onChange={e => setEmail(e.target.value)} />
+                : <p className="account-text">{email || "N/A"}</p>
+            }
+
+        </div>
+
+        <div className="button-group">
+            <button className="secondary-button" onClick={() => setIsEditing(prev => !prev)}>
+                Edit Profile
+            </button>
+            <button className="secondary-button">Change Password</button>
+        </div>
                 </section>
 
                 <section className="danger-zone">
