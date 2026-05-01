@@ -37,7 +37,7 @@ We are still using a 3-layer system:
 
 5) 
 a) Angus Liu worked on the Progress Report document. Angus Liu added issues and shareholder letter. 
-b) Tyler keller worked on  requirements and design document.
+b) Tyler Keller updated dev scripts, create the front and backend for the card detail page, and added frontend for some of the other pages. Tyler Keller worked on the Requirements and Design document.
 c) Angus Liu worked on the Implementation and testing document.
 d) Angus Liu worked on some functionalility for the account magic button for verfication and created db migration, Rahil added search functionaility and allowing card tracking to user,Rachel fixed backend neon issues.
 Cass created the new UI for the account verfication and changed all UI to match the dashboard. Tyler created API for card detail page and the frontend.
