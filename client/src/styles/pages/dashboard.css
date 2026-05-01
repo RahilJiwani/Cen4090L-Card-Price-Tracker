@@ -1,0 +1,248 @@
+.dashboard-panel {
+    padding: 20px;
+}
+
+.dashboard-list {
+    margin-top: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-list-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+    color: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.dashboard-list-meta {
+    color: #bbb;
+}
+
+.dashboard-empty-text {
+    margin-top: 10px;
+}
+
+.dashboard-remove-button {
+    padding: 6px 10px;
+    font-size: 12px;
+    flex: none;
+}
+
+.dashboard-legacy-page {
+    min-height: 100vh;
+    background-color: #161514;
+    background-image: radial-gradient(circle at center, #2e2a26 0%, #100f0e 100%);
+    color: #eaddc5;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    padding: 40px 20px;
+}
+
+.dashboard-legacy-nav {
+    max-width: 1000px;
+    margin: 0 auto 30px auto;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #d4af37;
+    text-align: center;
+}
+
+.dashboard-legacy-title {
+    font-size: 2.8rem;
+    margin: 0 0 10px 0;
+    font-weight: normal;
+    color: #f5e6c3;
+    text-shadow: 2px 2px 4px #000000;
+    letter-spacing: 1px;
+}
+
+.dashboard-legacy-subtitle {
+    color: #a39784;
+    font-size: 1.2rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.dashboard-legacy-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.dashboard-legacy-main-container {
+    background-color: rgba(30, 28, 26, 0.85);
+    border: 2px solid #5a4e3a;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: inset 0 0 20px #000000, 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.dashboard-legacy-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #3d3528;
+    padding-bottom: 10px;
+}
+
+.dashboard-legacy-section-title {
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: normal;
+    color: #d4af37;
+}
+
+.dashboard-legacy-card-count {
+    background-color: #2c2824;
+    border: 1px solid #8e7a54;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #eaddc5;
+}
+
+.dashboard-legacy-empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.dashboard-legacy-empty-text {
+    font-size: 1.4rem;
+    color: #a39784;
+    margin-bottom: 10px;
+}
+
+.dashboard-legacy-empty-subtext {
+    font-size: 1.1rem;
+    color: #6e6556;
+}
+
+.dashboard-legacy-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+.dashboard-legacy-mtg-card {
+    background-color: #1c1b1a;
+    border: 8px solid #000000;
+    border-radius: 12px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.8);
+    transition: transform 0.2s ease;
+}
+
+.dashboard-legacy-card-header {
+    background-color: #c2b8a3;
+    border: 1px solid #8a8273;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-legacy-card-name {
+    color: #1a1a1a;
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-legacy-art-placeholder {
+    height: 120px;
+    background-color: #2a2a2a;
+    border: 2px solid #555;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 15px #000;
+}
+
+.dashboard-legacy-art-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.dashboard-legacy-mana-symbol {
+    font-size: 2rem;
+    color: #555;
+}
+
+.dashboard-legacy-type-line {
+    background-color: #c2b8a3;
+    border: 1px solid #8a8273;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-legacy-set-symbol {
+    font-size: 0.9rem;
+}
+
+.dashboard-legacy-card-text-box {
+    background-color: #dfd6c5;
+    border: 1px solid #8a8273;
+    border-radius: 4px;
+    padding: 15px 10px;
+    flex-grow: 1;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.dashboard-legacy-price-tag {
+    color: #1a1a1a;
+    font-size: 0.9rem;
+}
+
+.dashboard-legacy-price-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2b8a3e;
+    margin-top: 5px;
+    display: block;
+}
+
+.dashboard-legacy-card-footer {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.dashboard-legacy-remove-button {
+    width: 100%;
+    background-color: #5c1b1b;
+    color: #f5e6c3;
+    border: 1px solid #8e7a54;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+}
+
+.dashboard-legacy-remove-button:hover {
+    background-color: #7a2222;
+    box-shadow: 0 0 8px #ff4444;
+}

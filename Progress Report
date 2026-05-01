@@ -1,0 +1,58 @@
+- Increment 2 -
+Group #17
+1) Team Members
+Rachel Armstrong (rma23f) Race11e
+Rahil Jiwani (rsj22a) RahilJiwani 
+Tyler Keller (tjk24c) Hobbs04067
+Angus Liu (AL21bk) K1nightmar3
+Cassadi Quinones (cxq22) cassadiq
+
+2) Card-Price-Tracker
+a Python program and website that aims to notify users when the price of a Magic: The Gathering card falls below a certain amount.
+
+3) 
+
+  The frontend now has a user login/sign up page. 
+
+  We implemented user login and account creation with password checking, we added email verfication. Touched up the frontend and all other pages.
+  We added search to work that is tied to the users account. delete was never finished cause of time.
+  The database has been updated to include the following tables:
+    Cards: including internal card id (PK), scryfall id, card names, rarity, set code, collector number, front and back (if needed) image urls, artist, and colors. 
+      This is linked to the Price History and Watchlist tables.  
+	  Users: Including internal user id(PK), username, email, password hash, and date user was created. This is linked to the Watchlist table. 
+	  PriceHistory: including internal id (PK), card id (FK), date the price was grabbed, price for card, and price for foil version of card.  
+	  Watchlist: including user id (FK) and card_id (FK). 
+ 
+We have a script that updates the database for new cards as well as updates the PriceHistory table. Entries in PriceHistory are pruned after 30 days.  
+ 
+We are still using a 3-layer system: 
+ - React frontend 
+	- Flask API backend 
+	- Neon cloud-hosted PostgreSQL database
+
+4) 
+  One issue we had was troubles with getting Github workflow to run seed.py daily. We attempted to implement this recently so this should be solved early 
+  during Increment 3. For now seed.py will be run manually. 
+  Another issue that had come up was that the issue with some testing ports and had to change for certain users that were running something else with a common port
+
+5) 
+a) Angus Liu worked on the Progress Report document. Angus Liu added issues and shareholder letter. 
+b) 
+c) 
+d) 
+e) 
+
+6) The teams plans to continue frontend and backend development for user alert emailing, user login, price tracking, and search functionality.
+
+7) 
+Dear [shareholders],
+This is the development team, we are writing to provide an update on the development of your MTG card price tracking platform
+We have created a current working prototype which allows you to get a login and signup of the website. We then added account data base tied to the User account so now you 
+can find all the card details and info. We unfournatualy ran out of time for the account delete and change function.
+We will be showing a more comeplete product by the next report.
+Best regards,
+MTG development team
+
+8) Link to video
+Paste here the link to your video.
+https://www.youtube.com/watch?v=7ZP3VYGVEuk

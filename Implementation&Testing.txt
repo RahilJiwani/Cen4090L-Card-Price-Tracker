@@ -1,0 +1,59 @@
+Software Implementation and Testing Document  
+ 
+
+For Group <17> 
+
+Version 2.0 
+
+Authors:  
+
+Tyler K. 
+
+Angus L. 
+
+Cassadi Q. 
+
+Rachel A. 
+
+Rahil J.  
+
+
+Programming Languages (5 points) 
+
+  JavaScript – JavaScript has a library called React which allows us to create front-end components that look smooth extremely efficiently. 
+
+  Python – Python has a library called Flask which is used to create the backend of the web application. The implementation removes a large part of the struggle with sockets and web directories. This was also the language used for the original version of the application making it trivial to switch from the legacy build. SQLAlchemy will be used with flask for interacting with the database.  
+
+
+Platforms, APIs, Databases, and other technologies used (5 points)  
+
+  PostgresSQL will be used for databasing, along with Neon (uses AWS) as the database host.  
+
+  MTGJson and Scryfall API will be used for card information, card images, and price history.  
+
+  Automation scripts set up strictly for Windows are used to develop and configure the environment.
+
+ 
+
+Execution-based Functional Testing (10 points) 
+
+  Some functional testing was performed by running the website on local machines using our Windows automation scripts.  
+ 
+  We tested the routing logic and the newly built navigation bar to make sure navigation is simple and easy to understand.  
+
+
+
+Execution-based Non-Functional Testing (10 points)
+
+  We performed non-functional testing by checking how the UI looked on the screen, verifying that the front-end works properly on a computer monitor interface. We tested the inline styles of the application to ensure the MTG-themed colors rendered correctly.
+
+  We also tested the signup form to make sure it includes accessibility tags for screen readers, and validates that passwords meet a required minimum character count.
+
+
+
+Non-Execution-based Testing (10 points)
+
+  We performed code reviews and walkthroughs to clean up our files and ensure that user passwords will be properly hashed in the backend. For example, we looked at our App.jsx file and decided to move the authentication logic into its own separate component so the routing code was cleaner and easier to read. We also inspected terminal errors to figure out missing file imports and to fix version conflicts when installing our NPM packages.
+
+
+
