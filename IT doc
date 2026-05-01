@@ -1,0 +1,21 @@
+Software Implementation and Testing
+Document
+For
+Group <17>
+Version 3.0
+Authors:
+Rachel Armstrong (rma23f) Race11e
+Rahil Jiwani (rsj22a) RahilJiwani 
+Tyler Keller (tjk24c) Hobbs04067
+Angus Liu (AL21bk) K1nightmar3
+Cassadi Quinones (cxq22) cassadiq
+1. Programming Languages (5 points)
+Python,CSS,Javascirpt. Java script a basic frontend, pythong just for an API and CSS part of the frontend.
+2. Platforms, APIs, Databases, and other technologies used (5 points)
+We used a Neon Databases scryfall for gathering data. API just a pythong API.
+3. Execution-based Functional Testing (10 points)
+yes we tested for our search and data base update all work as you can login and test. You can do search and will bring up cards in the current data base that we are using and shows all the info for it.
+4. Execution-based Non-Functional Testing (10 points)
+We do have some tests like load on the neon backend and can find that data in the neon data base that we are using. We have done some testing for the actual webiste but not like a full on ddos attack or anything like that.
+5. Non-Execution-based Testing (10 points)
+a decent amount like frontend and backend being orgnized together and refactored that to fix those issues. We changed some inputs given a security issue like possible attacks to the password or data base.
