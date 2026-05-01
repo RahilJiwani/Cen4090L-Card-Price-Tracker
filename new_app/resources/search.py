@@ -3,7 +3,7 @@ import requests
 from sqlalchemy import func
 
 from ..models import Card, PriceHistory, get_set_name
-from ..exts import db
+from ..exts import db, cache
 
 api = Namespace("search", description="Card searching operations")
 
@@ -23,38 +23,49 @@ class CardSearch(Resource):
         scryfall_q = query
         if card_type and card_type != "All":
             scryfall_q += f" t:{card_type}"
-            
-        try:
-            response = requests.get(f"https://api.scryfall.com/cards/search?q={scryfall_q}")
-            
-            if response.status_code == 404:
-                return {"cards": []}, 200
-                
-            response.raise_for_status()
-            data = response.json()
 
-            search_cards = data.get("data", [])[:20]
+        try:
+            # Cache Scryfall responses for 5 minutes to avoid paying network
+            # latency (+ cold TCP/TLS) on repeated or concurrent searches.
+            cache_key = f"scryfall:{scryfall_q}"
+            search_cards = cache.get(cache_key)
+
+            if search_cards is None:
+                response = requests.get(
+                    f"https://api.scryfall.com/cards/search?q={scryfall_q}"
+                )
+                if response.status_code == 404:
+                    return {"cards": []}, 200
+                response.raise_for_status()
+                data = response.json()
+                search_cards = data.get("data", [])[:20]
+                cache.set(cache_key, search_cards)
             scryfall_ids = [c["id"] for c in search_cards]
             db_cards = Card.query.filter(Card.scryfall_id.in_(scryfall_ids)).all() if scryfall_ids else []
             db_card_map = {c.scryfall_id: c for c in db_cards}
-            
+
             card_names = list(set([c.card_name for c in db_cards]))
             all_printings = Card.query.filter(Card.card_name.in_(card_names)).all() if card_names else []
-            
+
+            # Scope the price lookup to only cards in the current result set
+            # so we don't scan the entire PriceHistory table.
+            result_card_ids = [c.card_id for c in all_printings]
             subquery = db.session.query(
                 PriceHistory.card_id,
                 func.max(PriceHistory.date).label('max_date')
+            ).filter(
+                PriceHistory.card_id.in_(result_card_ids)
             ).group_by(PriceHistory.card_id).subquery()
-            
+
             latest_prices = db.session.query(
                 PriceHistory.card_id,
                 PriceHistory.price
             ).join(
                 subquery,
-                (PriceHistory.card_id == subquery.c.card_id) & 
+                (PriceHistory.card_id == subquery.c.card_id) &
                 (PriceHistory.date == subquery.c.max_date)
             ).all()
-            
+
             price_map = {p.card_id: p.price for p in latest_prices}
             
             printings_by_name = {}
