@@ -14,7 +14,7 @@ a Python program and website that aims to notify users when the price of a Magic
 
   The frontend now has a user login/sign up page. 
 
-  We implemented user login and account creation with password checking, but we still need the email portion of the authentication.
+  We implemented user login and account creation with password checking, we added email verfication. Touched up the frontend and all other pages.
 
   The database has been updated to include the following tables:
     Cards: including internal card id (PK), scryfall id, card names, rarity, set code, collector number, front and back (if needed) image urls, artist, and colors. 
