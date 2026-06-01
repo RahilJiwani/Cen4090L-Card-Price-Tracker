@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # ---------------------------------------------
+  # The Backend Flask API
+  # ---------------------------------------------
+  api:
+    # Replace 'yourusername' with your actual DockerHub username!
+    image: rahiljiwani/card-tracker-api:latest
+    build:
+      context: .
+      # Tells Docker to use the backend Dockerfile we just made
+      dockerfile: Dockerfile.api
+    # This automatically loads your Neon database connection string and secret keys!
+    env_file:
+      - .env
+    ports:
+      # Exposes the API on your computer at localhost:5008
+      - "5008:5008"
+    # Automatically restart the API if it crashes
+    restart: unless-stopped
+
+  # ---------------------------------------------
+  # The Frontend React UI (Served by Nginx)
+  # ---------------------------------------------
+  client:
+    # Replace 'yourusername' with your actual DockerHub username!
+    image: rahiljiwani/card-tracker-client:latest
+    build:
+      context: ./client
+      # Tells Docker to use the frontend Dockerfile we just made
+      dockerfile: Dockerfile.client
+    # Maps your computer's port 3000 to the container's port 80 (where Nginx listens)
+    ports:
+      - "3000:80"
+    # Ensure the backend container starts before the frontend container
+    depends_on:
+      - api
+    restart: unless-stopped

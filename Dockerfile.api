@@ -1,0 +1,27 @@
+# Use a lightweight Python base image
+FROM python:3.11-slim
+
+# Set the working directory inside the container
+# This is like running `cd /app` inside the container
+WORKDIR /app
+
+# Copy ONLY the requirements file first.
+# Why? Docker builds in layers and caches them. 
+# If we copy the requirements and install them, Docker saves that step.
+# If you edit your Python code later, Docker sees the requirements haven't changed
+# and skips reinstalling everything! This makes your builds MUCH faster.
+COPY requirements.txt .
+
+# Install the Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Now copy the rest of your backend code into the container
+# We only copy the `new_app/` folder because that's where your Flask code lives
+COPY new_app/ ./new_app/
+
+# Expose the port that Flask will run on
+EXPOSE 5008
+
+# The command to run when the container starts.
+# We set host to 0.0.0.0 so it's accessible from outside the container.
+CMD ["python", "-m", "flask", "--app", "new_app.app:app", "run", "--host", "0.0.0.0", "--port", "5008"]

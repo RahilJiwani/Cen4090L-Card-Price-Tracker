@@ -1,0 +1,21 @@
+# Ignore local virtual environments
+.venv/
+venv/
+env/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore Node.js dependencies
+client/node_modules/
+client/dist/
+
+# Ignore Git files
+.git/
+.github/
+.gitignore
+ 
+# Ignore local environment files (optional, but good practice if you pass env vars via docker-compose)
+# .env 
